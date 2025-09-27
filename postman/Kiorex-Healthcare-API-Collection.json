@@ -1,0 +1,828 @@
+{
+  "info": {
+    "name": "Kiorex Healthcare Platform API",
+    "description": "Comprehensive API collection for the Kiorex Healthcare Platform microservices",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "550e8400-e29b-41d4-a716-446655440003",
+      "type": "string"
+    },
+    {
+      "key": "doctorId",
+      "value": "550e8400-e29b-41d4-a716-446655440002",
+      "type": "string"
+    },
+    {
+      "key": "appointmentId",
+      "value": "550e8400-e29b-41d4-a716-446655440201",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication Service",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"patient@kiorex.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newpatient@kiorex.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phone\": \"+1234567890\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"gender\": \"male\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"your_refresh_token_here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Service",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"phone\": \"+1234567891\",\n  \"address\": \"123 Main St\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"zipCode\": \"10001\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/search?q=doctor&role=doctor",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "doctor"
+                },
+                {
+                  "key": "role",
+                  "value": "doctor"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Appointment Service",
+      "item": [
+        {
+          "name": "Get Available Slots",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/appointments/slots/available?providerId={{doctorId}}&startDate=2024-01-20&endDate=2024-01-27",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments", "slots", "available"],
+              "query": [
+                {
+                  "key": "providerId",
+                  "value": "{{doctorId}}"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2024-01-20"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-01-27"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{userId}}\",\n  \"providerId\": \"{{doctorId}}\",\n  \"slotId\": \"550e8400-e29b-41d4-a716-446655440101\",\n  \"appointmentTypeId\": \"550e8400-e29b-41d4-a716-446655440001\",\n  \"consultationType\": \"in_person\",\n  \"reasonForVisit\": \"Regular checkup\",\n  \"symptoms\": [\"fatigue\", \"headache\"],\n  \"chiefComplaint\": \"Feeling tired and occasional headaches\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/appointments",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Appointments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/appointments?patientId={{userId}}&status=scheduled",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments"],
+              "query": [
+                {
+                  "key": "patientId",
+                  "value": "{{userId}}"
+                },
+                {
+                  "key": "status",
+                  "value": "scheduled"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Upcoming Appointments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/appointments/upcoming",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments", "upcoming"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Check In Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/appointments/{{appointmentId}}/check-in",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments", "{{appointmentId}}", "check-in"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Schedule conflict\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/appointments/{{appointmentId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments", "{{appointmentId}}", "cancel"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Clinical Service",
+      "item": [
+        {
+          "name": "Get Medical Records",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/clinical/medical-records/patient/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical", "medical-records", "patient", "{{userId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Medical Record",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{userId}}\",\n  \"providerId\": \"{{doctorId}}\",\n  \"recordType\": \"consultation\",\n  \"title\": \"Follow-up Visit\",\n  \"description\": \"Patient follow-up for headache treatment\",\n  \"diagnosis\": \"Tension headache - improving\",\n  \"treatmentPlan\": \"Continue current treatment, monitor symptoms\",\n  \"medications\": [\"Ibuprofen 400mg as needed\"],\n  \"allergies\": [\"Penicillin\"],\n  \"vitalSigns\": {\n    \"bloodPressure\": \"118/78\",\n    \"heartRate\": 70,\n    \"temperature\": 98.4\n  },\n  \"notes\": \"Patient reports improvement in headache frequency and intensity.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clinical/medical-records",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical", "medical-records"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Prescriptions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/clinical/prescriptions/patient/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical", "prescriptions", "patient", "{{userId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Prescription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{userId}}\",\n  \"providerId\": \"{{doctorId}}\",\n  \"medicationName\": \"Acetaminophen\",\n  \"dosage\": \"500mg\",\n  \"frequency\": \"As needed\",\n  \"durationDays\": 14,\n  \"instructions\": \"Take every 6 hours as needed for pain\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clinical/prescriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical", "prescriptions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Lab Results",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/clinical/lab-results/patient/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical", "lab-results", "patient", "{{userId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notification Service",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications?userId={{userId}}&status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                },
+                {
+                  "key": "status",
+                  "value": "pending"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"appointment_reminder\",\n  \"title\": \"Appointment Reminder\",\n  \"message\": \"You have an appointment tomorrow at 11:00 AM\",\n  \"data\": {\n    \"appointmentId\": \"{{appointmentId}}\",\n    \"appointmentTime\": \"11:00 AM\"\n  },\n  \"channels\": [\"email\", \"sms\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/550e8400-e29b-41d4-a716-446655440201/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "550e8400-e29b-41d4-a716-446655440201", "read"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Notification Templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/templates",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "templates"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Search Service",
+      "item": [
+        {
+          "name": "Search",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"headache treatment\",\n  \"filters\": {\n    \"category\": \"medical\",\n    \"specialty\": \"neurology\"\n  },\n  \"limit\": 10,\n  \"offset\": 0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/search",
+              "host": ["{{baseUrl}}"],
+              "path": ["search"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Search Suggestions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/search/suggestions?q=headache",
+              "host": ["{{baseUrl}}"],
+              "path": ["search", "suggestions"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "headache"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Index Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"index\": \"healthcare-medical-records\",\n  \"document\": {\n    \"id\": \"{{appointmentId}}\",\n    \"type\": \"medical_record\",\n    \"title\": \"Headache Consultation\",\n    \"content\": \"Patient presented with persistent headaches. Diagnosis: Tension headache. Treatment: Rest, hydration, over-the-counter pain relief.\",\n    \"patientId\": \"{{userId}}\",\n    \"providerId\": \"{{doctorId}}\",\n    \"createdAt\": \"2024-01-15T10:00:00Z\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/search/index",
+              "host": ["{{baseUrl}}"],
+              "path": ["search", "index"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Video Service",
+      "item": [
+        {
+          "name": "Create Video Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentId\": \"{{appointmentId}}\",\n  \"hostId\": \"{{doctorId}}\",\n  \"participantIds\": [\"{{userId}}\"],\n  \"scheduledStart\": \"2024-01-20T14:00:00Z\",\n  \"scheduledEnd\": \"2024-01-20T14:30:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/video/sessions",
+              "host": ["{{baseUrl}}"],
+              "path": ["video", "sessions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Join Video Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/video/sessions/550e8400-e29b-41d4-a716-446655440001/join",
+              "host": ["{{baseUrl}}"],
+              "path": ["video", "sessions", "550e8400-e29b-41d4-a716-446655440001", "join"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Video Sessions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/video/sessions?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["video", "sessions"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analytics Service",
+      "item": [
+        {
+          "name": "Track Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventType\": \"user_login\",\n  \"eventData\": {\n    \"login_method\": \"email\",\n    \"device_type\": \"desktop\",\n    \"browser\": \"Chrome\"\n  },\n  \"sessionId\": \"session_123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/analytics/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "events"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/metrics?start=2024-01-01&end=2024-01-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "metrics"],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "end",
+                  "value": "2024-01-31"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Dashboard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Patient Dashboard\",\n  \"description\": \"Personal health analytics dashboard\",\n  \"widgets\": [\n    {\n      \"type\": \"metric\",\n      \"title\": \"Upcoming Appointments\",\n      \"metric\": \"patient_upcoming_appointments\"\n    },\n    {\n      \"type\": \"chart\",\n      \"title\": \"Health Trends\",\n      \"chart_type\": \"line\",\n      \"data_source\": \"patient_vitals\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboards",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboards"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-generate auth token if not set",
+          "if (!pm.environment.get('authToken')) {",
+          "    console.log('Please login first to get auth token');",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-save auth token from login response",
+          "if (pm.response.json() && pm.response.json().accessToken) {",
+          "    pm.environment.set('authToken', pm.response.json().accessToken);",
+          "    console.log('Auth token saved to environment');",
+          "}"
+        ]
+      }
+    }
+  ]
+}

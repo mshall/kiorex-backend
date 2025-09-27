@@ -46,6 +46,29 @@ A comprehensive appointment management microservice for the Kiorex healthcare pl
 - `POST /waitlist/:id/accept` - Accept offered slot
 - `POST /waitlist/:id/decline` - Decline offered slot
 
+## Database Access
+
+To access the appointment service database directly:
+
+```bash
+# Using psql
+psql -h localhost -p 5432 -U postgres -d appointments_db
+
+# Using Docker
+docker exec -it healthcare-postgres psql -U postgres -d appointments_db
+
+# Connection string
+postgresql://postgres:postgres123@localhost:5432/appointments_db
+```
+
+### Database Tables
+- `appointments` - Appointment records
+- `appointment_slots` - Available time slots
+- `appointment_types` - Types of appointments
+- `waitlists` - Waitlist entries
+- `recurring_appointments` - Recurring appointment patterns
+- `appointment_reminders` - Reminder records
+
 ## Environment Variables
 
 See `.env.example` for required environment variables.
@@ -73,3 +96,17 @@ docker build -t appointment-service .
 # Run container
 docker run -p 3005:3005 appointment-service
 ```
+
+## API Testing
+
+### Postman Collection
+Import the comprehensive API collection to test all endpoints:
+- **Collection**: [Kiorex Healthcare Platform API Collection](https://www.postman.com/kiorex-healthcare/workspace/kiorex-healthcare-platform/collection/kiorex-healthcare-api-collection)
+- **Environment**: Use the provided environment variables for easy testing
+- **Pre-configured**: All requests are pre-filled with sample data
+
+### Quick Start
+1. Import the Postman collection
+2. Set up environment variables (baseUrl, authToken, etc.)
+3. Run the "Login" request to get authentication token
+4. Test other endpoints with the authenticated token

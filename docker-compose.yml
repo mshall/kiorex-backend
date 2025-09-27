@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
-      POSTGRES_MULTIPLE_DATABASES: auth_db,users_db,appointments_db,payments_db,clinical_db,notifications_db,analytics_db
+      POSTGRES_MULTIPLE_DATABASES: auth_db,users_db,appointments_db,payments_db,clinical_db,notifications_db,search_db,video_db,analytics_db
     ports:
       - "5432:5432"
     volumes:
@@ -284,6 +284,11 @@ services:
     environment:
       NODE_ENV: development
       PORT: 3008
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_DATABASE: search_db
       ELASTICSEARCH_NODE: http://elasticsearch:9200
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -292,6 +297,7 @@ services:
     ports:
       - "3008:3008"
     depends_on:
+      - postgres
       - elasticsearch
       - redis
       - kafka
@@ -316,8 +322,10 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: redis123
       KAFKA_BROKERS: kafka:29092
-      AGORA_APP_ID: ${AGORA_APP_ID}
-      AGORA_APP_CERTIFICATE: ${AGORA_APP_CERTIFICATE}
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
     ports:
       - "3009:3009"
     depends_on:
@@ -345,6 +353,8 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: redis123
       KAFKA_BROKERS: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
       ELASTICSEARCH_NODE: http://elasticsearch:9200
     ports:
       - "3010:3010"
