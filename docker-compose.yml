@@ -227,22 +227,20 @@ services:
       DB_PORT: 5432
       DB_USERNAME: postgres
       DB_PASSWORD: postgres123
-      DB_DATABASE: clinical_db
+      DB_NAME: clinical_db
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: redis123
-      KAFKA_BROKERS: kafka:29092
-      MINIO_ENDPOINT: minio
-      MINIO_PORT: 9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin123
+      KAFKA_BROKER: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+      ENCRYPTION_KEY: super-secret-encryption-key-change-in-production
     ports:
       - "3006:3006"
     depends_on:
       - postgres
       - redis
       - kafka
-      - minio
     networks:
       - healthcare-network
 
