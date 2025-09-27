@@ -160,18 +160,24 @@ services:
     container_name: healthcare-appointment-service
     environment:
       NODE_ENV: development
-      PORT: 3003
+      PORT: 3005
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USERNAME: postgres
       DB_PASSWORD: postgres123
-      DB_DATABASE: appointments_db
+      DB_NAME: appointments_db
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: redis123
-      KAFKA_BROKERS: kafka:29092
+      KAFKA_BROKER: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+      USER_SERVICE_HOST: user-service
+      USER_SERVICE_PORT: 3002
+      NOTIFICATION_SERVICE_HOST: notification-service
+      NOTIFICATION_SERVICE_PORT: 3006
     ports:
-      - "3003:3003"
+      - "3005:3005"
     depends_on:
       - postgres
       - redis
@@ -216,7 +222,7 @@ services:
     container_name: healthcare-clinical-service
     environment:
       NODE_ENV: development
-      PORT: 3005
+      PORT: 3006
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USERNAME: postgres
@@ -231,7 +237,7 @@ services:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin123
     ports:
-      - "3005:3005"
+      - "3006:3006"
     depends_on:
       - postgres
       - redis
@@ -248,7 +254,7 @@ services:
     container_name: healthcare-notification-service
     environment:
       NODE_ENV: development
-      PORT: 3006
+      PORT: 3007
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USERNAME: postgres
@@ -263,7 +269,7 @@ services:
       TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
       TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER}
     ports:
-      - "3006:3006"
+      - "3007:3007"
     depends_on:
       - postgres
       - redis
@@ -279,14 +285,14 @@ services:
     container_name: healthcare-search-service
     environment:
       NODE_ENV: development
-      PORT: 3007
+      PORT: 3008
       ELASTICSEARCH_NODE: http://elasticsearch:9200
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: redis123
       KAFKA_BROKERS: kafka:29092
     ports:
-      - "3007:3007"
+      - "3008:3008"
     depends_on:
       - elasticsearch
       - redis
@@ -302,7 +308,7 @@ services:
     container_name: healthcare-video-service
     environment:
       NODE_ENV: development
-      PORT: 3008
+      PORT: 3009
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USERNAME: postgres
@@ -315,7 +321,7 @@ services:
       AGORA_APP_ID: ${AGORA_APP_ID}
       AGORA_APP_CERTIFICATE: ${AGORA_APP_CERTIFICATE}
     ports:
-      - "3008:3008"
+      - "3009:3009"
     depends_on:
       - postgres
       - redis
@@ -331,7 +337,7 @@ services:
     container_name: healthcare-analytics-service
     environment:
       NODE_ENV: development
-      PORT: 3009
+      PORT: 3010
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USERNAME: postgres
@@ -343,7 +349,7 @@ services:
       KAFKA_BROKERS: kafka:29092
       ELASTICSEARCH_NODE: http://elasticsearch:9200
     ports:
-      - "3009:3009"
+      - "3010:3010"
     depends_on:
       - postgres
       - redis
@@ -363,13 +369,13 @@ services:
       PORT: 3000
       AUTH_SERVICE_URL: http://auth-service:3001
       USER_SERVICE_URL: http://user-service:3002
-      APPOINTMENT_SERVICE_URL: http://appointment-service:3003
+      APPOINTMENT_SERVICE_URL: http://appointment-service:3005
       PAYMENT_SERVICE_URL: http://payment-service:3004
-      CLINICAL_SERVICE_URL: http://clinical-service:3005
-      NOTIFICATION_SERVICE_URL: http://notification-service:3006
-      SEARCH_SERVICE_URL: http://search-service:3007
-      VIDEO_SERVICE_URL: http://video-service:3008
-      ANALYTICS_SERVICE_URL: http://analytics-service:3009
+      CLINICAL_SERVICE_URL: http://clinical-service:3006
+      NOTIFICATION_SERVICE_URL: http://notification-service:3007
+      SEARCH_SERVICE_URL: http://search-service:3008
+      VIDEO_SERVICE_URL: http://video-service:3009
+      ANALYTICS_SERVICE_URL: http://analytics-service:3010
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: redis123
