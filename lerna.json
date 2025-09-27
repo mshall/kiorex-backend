@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "npmClient": "npm",
+  "command": {
+    "bootstrap": {
+      "hoist": true
+    },
+    "publish": {
+      "ignoreChanges": ["*.md", "test/**"],
+      "message": "chore(release): publish %s"
+    },
+    "version": {
+      "allowBranch": ["main", "develop"],
+      "conventionalCommits": true
+    }
+  },
+  "packages": [
+    "services/*",
+    "libs/*"
+  ]
+}
