@@ -1,104 +1,50 @@
 import { Injectable } from '@nestjs/common';
-
-enum CircuitState {
-  CLOSED = 'closed',
-  OPEN = 'open',
-  HALF_OPEN = 'half_open',
-}
-
-interface CircuitBreaker {
-  state: CircuitState;
-  failureCount: number;
-  successCount: number;
-  lastFailureTime: Date | null;
-  nextAttempt: Date | null;
-}
+import CircuitBreaker from 'opossum';
 
 @Injectable()
 export class CircuitBreakerService {
-  private circuits: Map<string, CircuitBreaker> = new Map();
-  private readonly FAILURE_THRESHOLD = 5;
-  private readonly SUCCESS_THRESHOLD = 3;
-  private readonly TIMEOUT_DURATION = 60000; // 60 seconds
-  private readonly HALF_OPEN_REQUESTS = 3;
+  private breakers: Map<string, CircuitBreaker> = new Map();
 
-  async isOpen(serviceName: string): Promise<boolean> {
-    const circuit = this.getCircuit(serviceName);
+  private readonly defaultOptions = {
+    timeout: 30000,
+    errorThresholdPercentage: 50,
+    resetTimeout: 30000,
+    volumeThreshold: 10,
+  };
 
-    if (circuit.state === CircuitState.OPEN) {
-      if (new Date() >= circuit.nextAttempt!) {
-        this.transitionToHalfOpen(serviceName);
-        return false;
-      }
-      return true;
-    }
-
-    return false;
-  }
-
-  recordSuccess(serviceName: string): void {
-    const circuit = this.getCircuit(serviceName);
-
-    if (circuit.state === CircuitState.HALF_OPEN) {
-      circuit.successCount++;
-      if (circuit.successCount >= this.SUCCESS_THRESHOLD) {
-        this.close(serviceName);
-      }
-    } else if (circuit.state === CircuitState.CLOSED) {
-      circuit.failureCount = 0;
-    }
-  }
-
-  recordFailure(serviceName: string): void {
-    const circuit = this.getCircuit(serviceName);
-
-    if (circuit.state === CircuitState.HALF_OPEN) {
-      this.open(serviceName);
-    } else if (circuit.state === CircuitState.CLOSED) {
-      circuit.failureCount++;
-      circuit.lastFailureTime = new Date();
-
-      if (circuit.failureCount >= this.FAILURE_THRESHOLD) {
-        this.open(serviceName);
-      }
-    }
-  }
-
-  private getCircuit(serviceName: string): CircuitBreaker {
-    if (!this.circuits.has(serviceName)) {
-      this.circuits.set(serviceName, {
-        state: CircuitState.CLOSED,
-        failureCount: 0,
-        successCount: 0,
-        lastFailureTime: null,
-        nextAttempt: null,
+  async execute<T>(service: string, operation: () => Promise<T>): Promise<T> {
+    let breaker = this.breakers.get(service);
+    
+    if (!breaker) {
+      breaker = new CircuitBreaker(operation, this.defaultOptions);
+      
+      breaker.on('open', () => {
+        console.log(`Circuit breaker opened for ${service}`);
       });
+      
+      breaker.on('halfOpen', () => {
+        console.log(`Circuit breaker half-open for ${service}`);
+      });
+      
+      breaker.on('close', () => {
+        console.log(`Circuit breaker closed for ${service}`);
+      });
+      
+      this.breakers.set(service, breaker);
     }
-
-    return this.circuits.get(serviceName)!;
+    
+    return await breaker.fire();
   }
 
-  private open(serviceName: string): void {
-    const circuit = this.getCircuit(serviceName);
-    circuit.state = CircuitState.OPEN;
-    circuit.nextAttempt = new Date(Date.now() + this.TIMEOUT_DURATION);
-    console.warn(`Circuit breaker OPEN for service: ${serviceName}`);
-  }
-
-  private close(serviceName: string): void {
-    const circuit = this.getCircuit(serviceName);
-    circuit.state = CircuitState.CLOSED;
-    circuit.failureCount = 0;
-    circuit.successCount = 0;
-    circuit.lastFailureTime = null;
-    circuit.nextAttempt = null;
-    console.info(`Circuit breaker CLOSED for service: ${serviceName}`);
-  }
-
-  private transitionToHalfOpen(serviceName: string): void {
-    const circuit = this.getCircuit(serviceName);
-    circuit.state = CircuitState.HALF_OPEN;
-    circuit.successCount = 0;
-    console.info(`Circuit breaker HALF-OPEN for service: ${serviceName}`);
+  getStatus(service: string): any {
+    const breaker = this.breakers.get(service);
+    if (!breaker) {
+      return { status: 'unknown' };
+    }
+    
+    return {
+      status: breaker.opened ? 'open' : breaker.halfOpen ? 'half-open' : 'closed',
+      stats: breaker.stats,
+    };
   }
 }

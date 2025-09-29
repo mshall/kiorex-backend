@@ -2,70 +2,91 @@ import { Injectable, Inject } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 
-interface RateLimitConfig {
-  windowMs: number;
-  maxRequests: number;
-}
-
 @Injectable()
 export class RateLimitService {
-  private configs: Map<string, RateLimitConfig> = new Map();
+  private readonly limits = {
+    global: { window: 60, limit: 1000 },
+    user: { window: 60, limit: 100 },
+    endpoint: {
+      '/api/auth/login': { window: 300, limit: 5 },
+      '/api/payments': { window: 60, limit: 20 },
+      '/api/search': { window: 60, limit: 50 },
+    },
+  };
 
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {
-    this.initializeConfigs();
-  }
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
-  private initializeConfigs() {
-    // Different rate limits for different endpoints
-    this.configs.set('default', { windowMs: 60000, maxRequests: 100 });
-    this.configs.set('/auth/login', { windowMs: 900000, maxRequests: 5 }); // 5 attempts per 15 min
-    this.configs.set('/payments', { windowMs: 60000, maxRequests: 30 });
-    this.configs.set('/search', { windowMs: 60000, maxRequests: 200 });
-    this.configs.set('/video', { windowMs: 60000, maxRequests: 10 });
-  }
-
-  async checkRateLimit(
-    identifier: string,
+  async checkLimit(
+    userId: string,
     endpoint: string,
-  ): Promise<{ allowed: boolean; remaining: number; resetAt: Date }> {
-    const config = this.configs.get(endpoint) || this.configs.get('default')!;
-    const key = `rate_limit:${identifier}:${endpoint}`;
+    ip: string,
+  ): Promise<{ allowed: boolean; remaining: number; resetAt: number }> {
+    const now = Date.now();
     
-    const current = await this.getCurrentCount(key);
-    const resetAt = await this.getResetTime(key, config.windowMs);
+    // Check global rate limit
+    const globalAllowed = await this.checkSpecificLimit(
+      `global:${ip}`,
+      this.limits.global,
+      now,
+    );
+    
+    if (!globalAllowed.allowed) {
+      return globalAllowed;
+    }
+    
+    // Check user rate limit
+    if (userId) {
+      const userAllowed = await this.checkSpecificLimit(
+        `user:${userId}`,
+        this.limits.user,
+        now,
+      );
+      
+      if (!userAllowed.allowed) {
+        return userAllowed;
+      }
+    }
+    
+    // Check endpoint-specific limit
+    const endpointLimit = this.limits.endpoint[endpoint];
+    if (endpointLimit) {
+      return await this.checkSpecificLimit(
+        `endpoint:${userId || ip}:${endpoint}`,
+        endpointLimit,
+        now,
+      );
+    }
+    
+    return { allowed: true, remaining: 100, resetAt: now + 60000 };
+  }
 
-    if (current >= config.maxRequests) {
+  private async checkSpecificLimit(
+    key: string,
+    limit: { window: number; limit: number },
+    now: number,
+  ): Promise<{ allowed: boolean; remaining: number; resetAt: number }> {
+    const windowKey = `ratelimit:${key}:${Math.floor(now / (limit.window * 1000))}`;
+    
+    const current = await this.cacheManager.get<number>(windowKey) || 0;
+    
+    if (current >= limit.limit) {
       return {
         allowed: false,
         remaining: 0,
-        resetAt,
+        resetAt: Math.ceil(now / (limit.window * 1000)) * (limit.window * 1000),
       };
     }
-
-    await this.incrementCount(key, config.windowMs);
-
+    
+    await this.cacheManager.set(
+      windowKey,
+      current + 1,
+      limit.window * 1000,
+    );
+    
     return {
       allowed: true,
-      remaining: config.maxRequests - current - 1,
-      resetAt,
+      remaining: limit.limit - current - 1,
+      resetAt: Math.ceil(now / (limit.window * 1000)) * (limit.window * 1000),
     };
-  }
-
-  private async getCurrentCount(key: string): Promise<number> {
-    const count = await this.cacheManager.get<number>(key);
-    return count || 0;
-  }
-
-  private async incrementCount(key: string, windowMs: number): Promise<void> {
-    const current = await this.getCurrentCount(key);
-    await this.cacheManager.set(key, current + 1, windowMs);
-  }
-
-  private async getResetTime(key: string, windowMs: number): Promise<Date> {
-    const ttl = await this.cacheManager.ttl(key);
-    if (ttl > 0) {
-      return new Date(Date.now() + ttl * 1000);
-    }
-    return new Date(Date.now() + windowMs);
   }
 }

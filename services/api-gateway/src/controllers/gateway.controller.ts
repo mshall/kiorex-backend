@@ -3,63 +3,76 @@ import {
   All,
   Req,
   Res,
-  UseGuards,
-  UseInterceptors,
+  Headers,
+  Body,
+  Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ProxyService } from '../services/proxy.service';
-import { AuthGuard } from '../guards/auth.guard';
-import { RateLimitGuard } from '../guards/rate-limit.guard';
-import { CircuitBreakerInterceptor } from '../interceptors/circuit-breaker.interceptor';
+import { RateLimitService } from '../services/rate-limit.service';
 
 @Controller()
-@UseGuards(AuthGuard, RateLimitGuard)
-@UseInterceptors(CircuitBreakerInterceptor)
 export class GatewayController {
-  constructor(private readonly proxyService: ProxyService) {}
+  constructor(
+    private proxyService: ProxyService,
+    private rateLimitService: RateLimitService,
+  ) {}
 
-  @All('/auth/*')
-  async proxyAuth(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'auth-service', 3001);
-  }
-
-  @All('/users/*')
-  async proxyUsers(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'user-service', 3002);
-  }
-
-  @All('/appointments/*')
-  async proxyAppointments(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'appointment-service', 3005);
-  }
-
-  @All('/payments/*')
-  async proxyPayments(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'payment-service', 3004);
-  }
-
-  @All('/clinical/*')
-  async proxyClinical(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'clinical-service', 3006);
-  }
-
-  @All('/notifications/*')
-  async proxyNotifications(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'notification-service', 3007);
-  }
-
-  @All('/search/*')
-  async proxySearch(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'search-service', 3008);
-  }
-
-  @All('/video/*')
-  async proxyVideo(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'video-service', 3009);
-  }
-
-  @All('/analytics/*')
-  async proxyAnalytics(@Req() req: Request, @Res() res: Response) {
-    return this.proxyService.forward(req, res, 'analytics-service', 3010);
+  @All('api/*')
+  async handleRequest(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Headers() headers: any,
+    @Body() body: any,
+    @Query() query: any,
+  ) {
+    const userId = (req as any).user?.userId;
+    const ip = req.ip;
+    
+    // Check rate limits
+    const rateLimit = await this.rateLimitService.checkLimit(
+      userId,
+      req.path,
+      ip,
+    );
+    
+    if (!rateLimit.allowed) {
+      res.setHeader('X-RateLimit-Limit', '0');
+      res.setHeader('X-RateLimit-Remaining', '0');
+      res.setHeader('X-RateLimit-Reset', rateLimit.resetAt.toString());
+      
+      throw new HttpException(
+        'Rate limit exceeded',
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+    
+    // Set rate limit headers
+    res.setHeader('X-RateLimit-Remaining', rateLimit.remaining.toString());
+    res.setHeader('X-RateLimit-Reset', rateLimit.resetAt.toString());
+    
+    try {
+      // Forward request
+      const result = await this.proxyService.forward(
+        req.path,
+        req.method,
+        headers,
+        body,
+        query,
+      );
+      
+      res.json(result);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
