@@ -50,7 +50,7 @@ async function bootstrap() {
   await app.startAllMicroservices();
 
   // Start HTTP server
-  const port = process.env.PORT || 3006;
+  const port = process.env.PORT || 3004;
   await app.listen(port);
   
   console.log(`Clinical Service is running on port ${port}`);

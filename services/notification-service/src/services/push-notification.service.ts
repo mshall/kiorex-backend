@@ -7,17 +7,26 @@ export class PushNotificationService {
   private firebaseApp: admin.app.App;
 
   constructor(private configService: ConfigService) {
-    // Initialize Firebase Admin SDK
-    if (!admin.apps.length) {
-      this.firebaseApp = admin.initializeApp({
-        credential: admin.credential.cert({
-          projectId: this.configService.get('FIREBASE_PROJECT_ID'),
-          clientEmail: this.configService.get('FIREBASE_CLIENT_EMAIL'),
-          privateKey: this.configService.get('FIREBASE_PRIVATE_KEY'),
-        }),
-      });
+    // Initialize Firebase Admin SDK only if proper credentials are provided
+    const projectId = this.configService.get('FIREBASE_PROJECT_ID');
+    const clientEmail = this.configService.get('FIREBASE_CLIENT_EMAIL');
+    const privateKey = this.configService.get('FIREBASE_PRIVATE_KEY');
+    
+    if (projectId && clientEmail && privateKey && !admin.apps.length) {
+      try {
+        this.firebaseApp = admin.initializeApp({
+          credential: admin.credential.cert({
+            projectId,
+            clientEmail,
+            privateKey,
+          }),
+        });
+      } catch (error) {
+        console.warn('Firebase initialization failed:', error.message);
+        // Continue without Firebase - service will still work for other notification types
+      }
     } else {
-      this.firebaseApp = admin.app();
+      console.warn('Firebase credentials not provided - push notifications will be disabled');
     }
   }
 
@@ -27,6 +36,11 @@ export class PushNotificationService {
     body: string;
     data?: any;
   }): Promise<void> {
+    if (!this.firebaseApp) {
+      console.warn('Firebase not initialized - push notification skipped');
+      return;
+    }
+
     const message = {
       token: data.token,
       notification: {
@@ -36,7 +50,12 @@ export class PushNotificationService {
       data: data.data || {},
     };
 
-    await this.firebaseApp.messaging().send(message);
+    try {
+      await this.firebaseApp.messaging().send(message);
+    } catch (error) {
+      console.error('Failed to send push notification:', error);
+      throw error;
+    }
   }
 
   async sendBulkPushNotifications(notifications: {
@@ -45,6 +64,11 @@ export class PushNotificationService {
     body: string;
     data?: any;
   }[]): Promise<void> {
+    if (!this.firebaseApp) {
+      console.warn('Firebase not initialized - bulk push notifications skipped');
+      return;
+    }
+
     const messages = notifications.map(notification => ({
       token: notification.token,
       notification: {
@@ -54,7 +78,14 @@ export class PushNotificationService {
       data: notification.data || {},
     }));
 
-    await this.firebaseApp.messaging().sendAll(messages);
+    for (const message of messages) {
+      try {
+        await this.firebaseApp.messaging().send(message);
+      } catch (error) {
+        console.error('Failed to send bulk push notification:', error);
+        // Continue with other messages
+      }
+    }
   }
 
   async sendToTopic(topic: string, data: {

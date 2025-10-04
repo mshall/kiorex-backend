@@ -1,0 +1,27 @@
+
+> api-gateway@1.0.0 start:dev
+> nest start --watch
+
+[2J[3J[H[[90m3:07:16 AM[0m] Starting compilation in watch mode...
+
+[[90m3:07:27 AM[0m] Found 0 errors. Watching for file changes.
+
+(node:54047) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [InstanceLoader] AppModule dependencies initialized +85ms
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [InstanceLoader] HttpModule dependencies initialized +1ms
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [InstanceLoader] CacheModule dependencies initialized +0ms
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
+[Nest] 54543  - 10/02/2025, 3:07:32 AM     LOG [InstanceLoader] GatewayModule dependencies initialized +1ms
+[Nest] 54543  - 10/02/2025, 3:07:33 AM     LOG [RoutesResolver] GatewayController {/}: +1077ms
+[Nest] 54543  - 10/02/2025, 3:07:33 AM     LOG [RouterExplorer] Mapped {/api/*, ALL} route +5ms
+[Nest] 54543  - 10/02/2025, 3:07:33 AM     LOG [RoutesResolver] HealthController {/health}: +0ms
+[Nest] 54543  - 10/02/2025, 3:07:33 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 54543  - 10/02/2025, 3:07:33 AM     LOG [RouterExplorer] Mapped {/health/ready, GET} route +0ms
+[Nest] 54543  - 10/02/2025, 3:07:33 AM     LOG [RouterExplorer] Mapped {/health/live, GET} route +0ms
+[Nest] 54543  - 10/02/2025, 3:07:33 AM     LOG [NestApplication] Nest application successfully started +4ms
+🚀 API Gateway running on port 3000

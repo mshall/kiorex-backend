@@ -764,7 +764,7 @@ export class AppointmentService {
 
   private async updateReminders(appointment: Appointment): Promise<void> {
     // Cancel old reminders
-    await this.reminderQueue.clean(0, 'wait', { appointmentId: appointment.previousAppointmentId });
+    await this.reminderQueue.clean(0, 'wait');
 
     // Schedule new reminders
     await this.queuePostBookingTasks(appointment);

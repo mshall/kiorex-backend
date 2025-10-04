@@ -50,7 +50,7 @@ import { ClinicalProcessor } from './processors/clinical.processor';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: process.env.NODE_ENV === 'development',
     }),
     TypeOrmModule.forFeature([
       MedicalRecord,
@@ -65,7 +65,7 @@ import { ClinicalProcessor } from './processors/clinical.processor';
       Immunization,
     ]),
     CacheModule.register({
-      store: redisStore,
+      store: redisStore as any,
       host: process.env.REDIS_HOST,
       port: process.env.REDIS_PORT,
       ttl: 600,
@@ -94,8 +94,8 @@ import { ClinicalProcessor } from './processors/clinical.processor';
     }),
     HttpModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '24h' },
+      secret: process.env.JWT_SECRET || 'super-secret-jwt-key-change-in-production',
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '15m' },
     }),
   ],
   controllers: [
@@ -115,6 +115,6 @@ import { ClinicalProcessor } from './processors/clinical.processor';
     DrugInteractionService,
     ClinicalProcessor,
   ],
-  exports: [MedicalRecordService, PrescriptionService],
+  exports: [],
 })
 export class ClinicalModule {}

@@ -1,0 +1,75 @@
+
+> clinical-service@1.0.0 start:dev
+> nest start --watch
+
+[2J[3J[H[[90m3:07:17 AM[0m] Starting compilation in watch mode...
+
+[96msrc/clinical.module.ts[0m:[93m8[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@nestjs/jwt' or its corresponding type declarations.
+
+[7m8[0m import { JwtModule } from '@nestjs/jwt';
+[7m [0m [91m                          ~~~~~~~~~~~~~[0m
+
+[96msrc/clinical.module.ts[0m:[93m68[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'typeof import("/Users/mohamedelshall/Library/Mobile Documents/com~apple~CloudDocs/Documents/Me/Personal/Work/Kiorex/SourceCode/Backend/kiorex-backend/services/clinical-service/node_modules/cache-manager-redis-store/dist/index")' is not assignable to type '(string | CacheStoreFactory | CacheStore) & typeof import("/Users/mohamedelshall/Library/Mobile Documents/com~apple~CloudDocs/Documents/Me/Personal/Work/Kiorex/SourceCode/Backend/kiorex-backend/services/clinical-service/node_modules/cache-manager-redis-store/dist/index")'.
+  Type 'typeof import("/Users/mohamedelshall/Library/Mobile Documents/com~apple~CloudDocs/Documents/Me/Personal/Work/Kiorex/SourceCode/Backend/kiorex-backend/services/clinical-service/node_modules/cache-manager-redis-store/dist/index")' is not assignable to type 'CacheStore & typeof import("/Users/mohamedelshall/Library/Mobile Documents/com~apple~CloudDocs/Documents/Me/Personal/Work/Kiorex/SourceCode/Backend/kiorex-backend/services/clinical-service/node_modules/cache-manager-redis-store/dist/index")'.
+    Type 'typeof import("/Users/mohamedelshall/Library/Mobile Documents/com~apple~CloudDocs/Documents/Me/Personal/Work/Kiorex/SourceCode/Backend/kiorex-backend/services/clinical-service/node_modules/cache-manager-redis-store/dist/index")' is missing the following properties from type 'CacheStore': set, get
+
+[7m68[0m       store: redisStore,
+[7m  [0m [91m      ~~~~~[0m
+
+  [96mnode_modules/@nestjs/cache-manager/dist/interfaces/cache-manager.interface.d.ts[0m:[93m63[0m:[93m5[0m
+    [7m63[0m     store?: string | CacheStoreFactory | CacheStore;
+    [7m  [0m [96m    ~~~~~[0m
+    The expected type comes from property 'store' which is declared here on type 'CacheModuleOptions<{ store: typeof import("/Users/mohamedelshall/Library/Mobile Documents/com~apple~CloudDocs/Documents/Me/Personal/Work/Kiorex/SourceCode/Backend/kiorex-backend/services/clinical-service/node_modules/cache-manager-redis-store/dist/index"); host: string; port: string; ttl: number; }>'
+
+[96msrc/guards/jwt-auth.guard.ts[0m:[93m2[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '@nestjs/jwt' or its corresponding type declarations.
+
+[7m2[0m import { JwtService } from '@nestjs/jwt';
+[7m [0m [91m                           ~~~~~~~~~~~~~[0m
+
+[96msrc/services/medical-record.service.ts[0m:[93m59[0m:[93m29[0m - [91merror[0m[90m TS2339: [0mProperty 'id' does not exist on type 'MedicalRecord[]'.
+
+[7m59[0m       recordId: savedRecord.id,
+[7m  [0m [91m                            ~~[0m
+
+[96msrc/services/medical-record.service.ts[0m:[93m65[0m:[93m29[0m - [91merror[0m[90m TS2339: [0mProperty 'id' does not exist on type 'MedicalRecord[]'.
+
+[7m65[0m       recordId: savedRecord.id,
+[7m  [0m [91m                            ~~[0m
+
+[96msrc/services/medical-record.service.ts[0m:[93m66[0m:[93m30[0m - [91merror[0m[90m TS2339: [0mProperty 'patientId' does not exist on type 'MedicalRecord[]'.
+
+[7m66[0m       patientId: savedRecord.patientId,
+[7m  [0m [91m                             ~~~~~~~~~[0m
+
+[96msrc/services/medical-record.service.ts[0m:[93m67[0m:[93m31[0m - [91merror[0m[90m TS2339: [0mProperty 'providerId' does not exist on type 'MedicalRecord[]'.
+
+[7m67[0m       providerId: savedRecord.providerId,
+[7m  [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/services/medical-record.service.ts[0m:[93m68[0m:[93m31[0m - [91merror[0m[90m TS2339: [0mProperty 'recordType' does not exist on type 'MedicalRecord[]'.
+
+[7m68[0m       recordType: savedRecord.recordType,
+[7m  [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/services/medical-record.service.ts[0m:[93m72[0m:[93m5[0m - [91merror[0m[90m TS2740: [0mType 'MedicalRecord[]' is missing the following properties from type 'MedicalRecord': id, patientId, providerId, encounterId, and 27 more.
+
+[7m72[0m     return savedRecord;
+[7m  [0m [91m    ~~~~~~[0m
+
+[96msrc/services/prescription.service.ts[0m:[93m51[0m:[93m22[0m - [91merror[0m[90m TS2551: [0mProperty 'setMonths' does not exist on type 'Date'. Did you mean 'setMonth'?
+
+[7m51[0m       expirationDate.setMonths(expirationDate.getMonth() + 6); // 6 months for controlled
+[7m  [0m [91m                     ~~~~~~~~~[0m
+
+  [96mnode_modules/typescript/lib/lib.es5.d.ts[0m:[93m896[0m:[93m5[0m
+    [7m896[0m     setMonth(month: number, date?: number): number;
+    [7m   [0m [96m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'setMonth' is declared here.
+
+[96msrc/services/vitals.service.ts[0m:[93m19[0m:[93m5[0m - [91merror[0m[90m TS2740: [0mType 'Vitals[]' is missing the following properties from type 'Vitals': id, patientId, recordedBy, medicalRecord, and 16 more.
+
+[7m19[0m     return await this.vitalsRepository.save(vitals);
+[7m  [0m [91m    ~~~~~~[0m
+
+[[90m3:07:35 AM[0m] Found 11 errors. Watching for file changes.
+

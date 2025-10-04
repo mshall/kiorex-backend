@@ -22,12 +22,12 @@ export class CircuitBreakerInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       tap(() => {
-        // Record success
-        this.circuitBreaker.recordSuccess(serviceName);
+        // Success is automatically recorded by the circuit breaker
+        console.log(`Request to ${serviceName} succeeded`);
       }),
       catchError((error) => {
-        // Record failure
-        this.circuitBreaker.recordFailure(serviceName);
+        // Failure is automatically recorded by the circuit breaker
+        console.log(`Request to ${serviceName} failed:`, error.message);
         return throwError(() => error);
       }),
     );

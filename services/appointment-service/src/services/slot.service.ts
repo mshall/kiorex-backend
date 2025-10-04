@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, LessThan, MoreThan } from 'typeorm';
 import { AppointmentSlot, SlotStatus } from '../entities/appointment-slot.entity';
 import { CreateSlotDto, BulkCreateSlotsDto } from '../dto/create-slot.dto';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Injectable()
 export class SlotService {

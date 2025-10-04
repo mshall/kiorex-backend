@@ -1,0 +1,39 @@
+
+> search-service@1.0.0 start:dev
+> nest start --watch
+
+[2J[3J[H[[90m3:07:21 AM[0m] Starting compilation in watch mode...
+
+[96msrc/services/search.service.ts[0m:[93m131[0m:[93m29[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'provider_id' does not exist in type '{ status: string; }'.
+
+[7m131[0m       filter.push({ term: { provider_id: providerId } });
+[7m   [0m [91m                            ~~~~~~~~~~~[0m
+
+  [96msrc/services/search.service.ts[0m:[93m127[0m:[93m9[0m
+    [7m127[0m       { term: { status: 'available' } },
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    The expected type comes from property 'term' which is declared here on type '{ term: { status: string; }; }'
+
+[96msrc/services/search.service.ts[0m:[93m136[0m:[93m9[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'range' does not exist in type '{ term: { status: string; }; }'.
+
+[7m136[0m         range: {
+[7m   [0m [91m        ~~~~~[0m
+
+[96msrc/services/search.service.ts[0m:[93m146[0m:[93m29[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and ''appointment_type.keyword'' does not exist in type '{ status: string; }'.
+
+[7m146[0m       filter.push({ term: { 'appointment_type.keyword': type } });
+[7m   [0m [91m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/services/search.service.ts[0m:[93m127[0m:[93m9[0m
+    [7m127[0m       { term: { status: 'available' } },
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    The expected type comes from property 'term' which is declared here on type '{ term: { status: string; }; }'
+
+[96msrc/services/search.service.ts[0m:[93m212[0m:[93m50[0m - [91merror[0m[90m TS2339: [0mProperty 'map' does not exist on type 'SearchPhraseSuggestOption | SearchPhraseSuggestOption[] | SearchTermSuggestOption | SearchTermSuggestOption[] | SearchCompletionSuggestOption<...> | SearchCompletionSuggestOption<...>[]'.
+  Property 'map' does not exist on type 'SearchPhraseSuggestOption'.
+
+[7m212[0m     return result.suggest.suggestions[0].options.map(o => o.text);
+[7m   [0m [91m                                                 ~~~[0m
+
+[[90m3:07:34 AM[0m] Found 4 errors. Watching for file changes.
+

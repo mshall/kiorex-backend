@@ -48,7 +48,7 @@ export class PrescriptionService {
     // Calculate expiration date
     const expirationDate = new Date();
     if (createDto.isControlled) {
-      expirationDate.setMonths(expirationDate.getMonth() + 6); // 6 months for controlled
+      expirationDate.setMonth(expirationDate.getMonth() + 6); // 6 months for controlled
     } else {
       expirationDate.setFullYear(expirationDate.getFullYear() + 1); // 1 year for regular
     }

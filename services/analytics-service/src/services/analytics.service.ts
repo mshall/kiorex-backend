@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Metric } from './entities/metric.entity';
-import { AnalyticsEvent } from './entities/analytics-event.entity';
-import { AnalyticsDashboard } from './entities/analytics-dashboard.entity';
+import { Metric } from '../entities/metric.entity';
+import { AnalyticsEvent } from '../entities/analytics-event.entity';
+import { AnalyticsDashboard } from '../entities/analytics-dashboard.entity';
 
 @Injectable()
 export class AnalyticsService {
@@ -19,7 +19,7 @@ export class AnalyticsService {
   async trackEvent(eventType: string, eventData: any, userId: string, sessionId: string) {
     const event = this.eventRepository.create({
       eventType,
-      eventData,
+      properties: eventData,
       userId,
       sessionId,
       timestamp: new Date(),
@@ -30,10 +30,10 @@ export class AnalyticsService {
   async getMetrics(timeRange: { start: Date; end: Date }) {
     return this.metricRepository.find({
       where: {
-        timestamp: {
+        createdAt: {
           $gte: timeRange.start,
           $lte: timeRange.end,
-        },
+        } as any,
       },
     });
   }

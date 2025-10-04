@@ -196,7 +196,7 @@ export class AuthService {
     await this.mfaSecretRepository.save(mfaSecret);
 
     // Generate QR code
-    const qrCode = await QRCode.toDataURL(secret.otpauth_url);
+    const qrCode = secret.otpauth_url ? await QRCode.toDataURL(secret.otpauth_url) : '';
 
     return { qrCode, secret: secret.base32 };
   }
@@ -289,8 +289,8 @@ export class AuthService {
 
     // Update password
     user.password = newPassword;
-    user.passwordResetToken = null;
-    user.passwordResetExpires = null;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
     user.lastPasswordChange = new Date();
 
     await this.userAuthRepository.save(user);

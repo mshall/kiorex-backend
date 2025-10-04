@@ -59,7 +59,7 @@ import { ReminderProcessor } from './processors/reminder.processor';
       AppointmentReminder,
     ]),
     CacheModule.register({
-      store: redisStore,
+      store: redisStore as any,
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT, 10) || 6379,
       ttl: 300, // 5 minutes

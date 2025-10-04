@@ -51,8 +51,12 @@ export class TemplateService {
     htmlContent?: string;
     variables?: any[];
   }): Promise<NotificationTemplate> {
-    const template = this.templateRepository.create(templateData);
-    return await this.templateRepository.save(template);
+    const template = this.templateRepository.create({
+      ...templateData,
+      type: templateData.type as any,
+    });
+    const savedTemplate = await this.templateRepository.save(template);
+    return Array.isArray(savedTemplate) ? savedTemplate[0] : savedTemplate;
   }
 
   async updateTemplate(id: string, updates: any): Promise<NotificationTemplate> {

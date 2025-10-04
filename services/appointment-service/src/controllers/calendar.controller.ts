@@ -4,6 +4,7 @@ import {
   Query,
   UseGuards,
   ParseUUIDPipe,
+  Param,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';

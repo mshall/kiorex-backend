@@ -21,20 +21,20 @@ export class LoadBalancerService {
     const services = [
       { name: 'auth-service', port: 3001 },
       { name: 'user-service', port: 3002 },
-      { name: 'appointment-service', port: 3005 },
+      { name: 'appointment-service', port: 3003 },
       { name: 'payment-service', port: 3004 },
-      { name: 'clinical-service', port: 3006 },
-      { name: 'notification-service', port: 3007 },
-      { name: 'search-service', port: 3008 },
-      { name: 'video-service', port: 3009 },
-      { name: 'analytics-service', port: 3010 },
+      { name: 'clinical-service', port: 3005 },
+      { name: 'notification-service', port: 3006 },
+      { name: 'search-service', port: 3007 },
+      { name: 'video-service', port: 3008 },
+      { name: 'analytics-service', port: 3009 },
     ];
 
     services.forEach(service => {
       this.instances.set(service.name, [
         {
           id: `${service.name}-1`,
-          host: service.name,
+          host: 'localhost',
           port: service.port,
           healthy: true,
           lastHealthCheck: new Date(),

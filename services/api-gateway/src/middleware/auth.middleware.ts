@@ -40,9 +40,9 @@ export class AuthMiddleware implements NestMiddleware {
   private isPublicEndpoint(url: string): boolean {
     const publicEndpoints = [
       '/health',
-      '/api/auth/login',
-      '/api/auth/register',
-      '/api/auth/refresh',
+      '/auth/login',
+      '/auth/register',
+      '/auth/refresh',
     ];
 
     return publicEndpoints.some(endpoint => url.startsWith(endpoint));

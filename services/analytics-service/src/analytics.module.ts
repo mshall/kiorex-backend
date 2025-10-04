@@ -11,8 +11,8 @@ import { AnalyticsController } from './controllers/analytics.controller';
   imports: [
     TypeOrmModule.forFeature([Metric, AnalyticsEvent, AnalyticsDashboard]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'default-secret',
-      signOptions: { expiresIn: '24h' },
+      secret: process.env.JWT_SECRET || 'super-secret-jwt-key-change-in-production',
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '15m' },
     }),
   ],
   providers: [AnalyticsService],

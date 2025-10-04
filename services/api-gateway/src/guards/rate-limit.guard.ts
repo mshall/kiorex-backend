@@ -16,13 +16,14 @@ export class RateLimitGuard implements CanActivate {
 
     const identifier = this.getIdentifier(request);
     const endpoint = this.getEndpoint(request.url);
+    const ip = request.ip || request.connection.remoteAddress || 'unknown';
 
-    const rateLimitResult = await this.rateLimitService.checkRateLimit(identifier, endpoint);
+    const rateLimitResult = await this.rateLimitService.checkLimit(identifier, endpoint, ip);
 
     // Add rate limit headers
     response.setHeader('X-RateLimit-Limit', 100);
     response.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining);
-    response.setHeader('X-RateLimit-Reset', rateLimitResult.resetAt.getTime());
+    response.setHeader('X-RateLimit-Reset', rateLimitResult.resetAt);
 
     if (!rateLimitResult.allowed) {
       throw new HttpException(

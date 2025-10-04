@@ -16,7 +16,8 @@ export class VitalsService {
       recordedBy: userId,
     });
 
-    return await this.vitalsRepository.save(vitals);
+    const savedVitals = await this.vitalsRepository.save(vitals);
+    return Array.isArray(savedVitals) ? savedVitals[0] : savedVitals;
   }
 
   async getPatientVitals(

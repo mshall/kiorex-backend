@@ -8,17 +8,17 @@ export class AnalyticsDashboard {
   @Column()
   name: string;
 
-  @Column('text')
+  @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column('jsonb')
-  widgets: any[];
-
-  @Column()
-  userId: string;
+  @Column({ type: 'jsonb' })
+  configuration: any;
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({ nullable: true })
+  userId: string;
 
   @CreateDateColumn()
   createdAt: Date;

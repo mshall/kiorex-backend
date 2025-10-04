@@ -8,14 +8,23 @@ import { firstValueFrom } from 'rxjs';
 export class ProxyService {
   private readonly serviceMap = {
     '/api/auth': { service: 'auth-service', port: 3001 },
+    '/auth': { service: 'auth-service', port: 3001 },
     '/api/users': { service: 'user-service', port: 3002 },
-    '/api/appointments': { service: 'appointment-service', port: 3005 },
+    '/users': { service: 'user-service', port: 3002 },
+    '/api/appointments': { service: 'appointment-service', port: 3003 },
+    '/appointments': { service: 'appointment-service', port: 3003 },
     '/api/payments': { service: 'payment-service', port: 3004 },
-    '/api/clinical': { service: 'clinical-service', port: 3006 },
-    '/api/notifications': { service: 'notification-service', port: 3007 },
-    '/api/search': { service: 'search-service', port: 3008 },
-    '/api/video': { service: 'video-service', port: 3009 },
-    '/api/analytics': { service: 'analytics-service', port: 3010 },
+    '/payments': { service: 'payment-service', port: 3004 },
+    '/api/clinical': { service: 'clinical-service', port: 3005 },
+    '/clinical': { service: 'clinical-service', port: 3005 },
+    '/api/notifications': { service: 'notification-service', port: 3006 },
+    '/notifications': { service: 'notification-service', port: 3006 },
+    '/api/search': { service: 'search-service', port: 3007 },
+    '/search': { service: 'search-service', port: 3007 },
+    '/api/video': { service: 'video-service', port: 3008 },
+    '/video': { service: 'video-service', port: 3008 },
+    '/api/analytics': { service: 'analytics-service', port: 3009 },
+    '/analytics': { service: 'analytics-service', port: 3009 },
   };
 
   constructor(
@@ -47,8 +56,32 @@ export class ProxyService {
       );
     }
 
+    // Transform path for the target service
+    let targetPath = path;
+    if (path.startsWith('/auth/')) {
+      targetPath = path; // Keep /auth for auth service
+    } else if (path.startsWith('/api/auth/')) {
+      targetPath = path.replace('/api/auth', '/auth');
+    } else if (path.startsWith('/users/')) {
+      targetPath = path.replace('/users', '/api/users');
+    } else if (path.startsWith('/appointments/')) {
+      targetPath = path.replace('/appointments', '/api/appointments');
+    } else if (path.startsWith('/payments/')) {
+      targetPath = path.replace('/payments', '/api/payments');
+    } else if (path.startsWith('/clinical/')) {
+      targetPath = path.replace('/clinical', '/api/clinical');
+    } else if (path.startsWith('/notifications/')) {
+      targetPath = path.replace('/notifications', '/api/notifications');
+    } else if (path.startsWith('/search/')) {
+      targetPath = path.replace('/search', '/api/search');
+    } else if (path.startsWith('/video/')) {
+      targetPath = path.replace('/video', '/api/video');
+    } else if (path.startsWith('/analytics/')) {
+      targetPath = path.replace('/analytics', '/api/analytics');
+    }
+    
     // Build target URL
-    const targetUrl = `http://${instance.host}:${instance.port}${path}`;
+    const targetUrl = `http://${instance.host}:${instance.port}${targetPath}`;
 
     // Execute with circuit breaker
     return await this.circuitBreaker.execute(

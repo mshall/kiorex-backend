@@ -1,0 +1,15 @@
+
+> user-service@0.0.1 start:dev
+> nest start --watch
+
+[2J[3J[H[[90m3:07:17 AM[0m] Starting compilation in watch mode...
+
+[[90m3:07:27 AM[0m] Found 0 errors. Watching for file changes.
+
+(node:53899) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[Nest] 54564  - 10/02/2025, 3:07:30 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 54564  - 10/02/2025, 3:07:30 AM     LOG [InstanceLoader] AppModule dependencies initialized +67ms
+[Nest] 54564  - 10/02/2025, 3:07:30 AM     LOG [RoutesResolver] AppController {/}: +13ms
+[Nest] 54564  - 10/02/2025, 3:07:30 AM     LOG [RouterExplorer] Mapped {/, GET} route +4ms
+[Nest] 54564  - 10/02/2025, 3:07:30 AM     LOG [NestApplication] Nest application successfully started +1ms

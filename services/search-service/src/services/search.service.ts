@@ -123,18 +123,18 @@ export class SearchService {
     const { providerId, date, timeSlot, type } = query;
     
     const must = [];
-    const filter = [
+    const filter: any[] = [
       { term: { status: 'available' } },
     ];
 
     if (providerId) {
-      filter.push({ term: { provider_id: providerId } });
+      filter.push({ term: { 'provider_id': providerId } });
     }
 
     if (date) {
       filter.push({
         range: {
-          start_time: {
+          'start_time': {
             gte: `${date}T00:00:00`,
             lte: `${date}T23:59:59`,
           },
@@ -209,7 +209,8 @@ export class SearchService {
       },
     });
 
-    return result.suggest.suggestions[0].options.map(o => o.text);
+    const suggestions = result.suggest.suggestions[0].options;
+    return Array.isArray(suggestions) ? suggestions.map(o => o.text) : [suggestions.text];
   }
 
   private getSortCriteria(sortBy: string): any[] {

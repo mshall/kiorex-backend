@@ -8,14 +8,17 @@ export class Metric {
   @Column()
   name: string;
 
-  @Column('float')
+  @Column()
   value: number;
 
-  @Column('jsonb')
-  metadata: Record<string, any>;
+  @Column({ nullable: true })
+  unit: string;
 
-  @Column()
-  timestamp: Date;
+  @Column({ nullable: true })
+  category: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  metadata: any;
 
   @CreateDateColumn()
   createdAt: Date;

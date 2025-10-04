@@ -50,26 +50,27 @@ export class MedicalRecordService {
     });
 
     const savedRecord = await this.recordRepository.save(record);
+    const recordData = Array.isArray(savedRecord) ? savedRecord[0] : savedRecord;
 
     // Convert to FHIR format for interoperability
-    const fhirResource = await this.fhirService.convertToFHIR(savedRecord);
+    const fhirResource = await this.fhirService.convertToFHIR(recordData);
     
     // Queue for processing
     await this.clinicalQueue.add('process-medical-record', {
-      recordId: savedRecord.id,
+      recordId: recordData.id,
       fhirResource,
     });
 
     // Emit event
     await this.kafkaClient.emit('medical-record.created', {
-      recordId: savedRecord.id,
-      patientId: savedRecord.patientId,
-      providerId: savedRecord.providerId,
-      recordType: savedRecord.recordType,
+      recordId: recordData.id,
+      patientId: recordData.patientId,
+      providerId: recordData.providerId,
+      recordType: recordData.recordType,
       timestamp: new Date(),
     });
 
-    return savedRecord;
+    return recordData;
   }
 
   async getMedicalRecord(

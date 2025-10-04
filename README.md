@@ -273,7 +273,41 @@ curl http://localhost:3001/health
 ```
 
 ## 🔗 API Testing
-Import the comprehensive API collection to test all endpoints:
+
+### Current Service Status
+- ✅ **Auth Service**: Fully functional with JWT authentication
+- ✅ **API Gateway**: Working with proper routing and rate limiting
+- ⚠️ **Notification Service**: JWT authentication needs fixing
+- ⚠️ **Clinical Service**: Internal server errors need resolution
+- ⚠️ **Video Service**: Internal server errors need resolution
+- ⚠️ **Analytics Service**: Internal server errors need resolution
+
+### Postman Collection
+We provide a comprehensive Postman collection for testing all microservices:
+
+**Collection Files:**
+- `postman/Kiorex-Healthcare-API.postman_collection.json` - Complete API collection
+- `postman/Kiorex-Healthcare-Environment.postman_environment.json` - Environment variables
+- `postman/README.md` - Detailed testing documentation
+
+**Quick Setup:**
+1. Import both JSON files into Postman
+2. Select "Kiorex Healthcare Environment"
+3. Start all services: `npm run start:dev`
+4. Run the "Admin Login" request to get authentication token
+5. All subsequent requests will automatically use the token
+
+**Test Credentials:**
+- **Admin**: `admin@healthcare.com` / `Admin@123456`
+- **Doctor**: `doctor1@healthcare.com` / `Doctor@123456`
+- **Patient**: `patient1@healthcare.com` / `Patient@123456`
+
+**Working Endpoints:**
+- ✅ Authentication: `/auth/login`, `/auth/register`, `/auth/profile`
+- ✅ API Gateway: All routing and health checks
+- ⚠️ Other services: Need JWT authentication fixes
+
+**Online Collection:**
 - **Collection**: [Kiorex Healthcare Platform API Collection](https://www.postman.com/kiorex-healthcare/workspace/kiorex-healthcare-platform/collection/kiorex-healthcare-api-collection)
 
 ## 📊 Database Access

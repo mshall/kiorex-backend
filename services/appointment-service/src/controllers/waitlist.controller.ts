@@ -38,7 +38,7 @@ export class WaitlistController {
     @Query('patientId') patientId?: string,
     @Query('status') status?: string,
   ) {
-    return await this.waitlistService.getWaitlistEntries(providerId, patientId, status);
+    return await this.waitlistService.getWaitlistEntries(providerId, patientId, status as any);
   }
 
   @Post(':id/offer')

@@ -94,7 +94,7 @@ async function seed() {
     });
   }
 
-  const createdUsers = [];
+  const createdUsers: UserAuth[] = [];
   
   for (const userData of users) {
     const user = userAuthRepo.create({

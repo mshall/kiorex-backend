@@ -55,29 +55,30 @@ export class NotificationService {
       body: await this.templateService.renderBody(template, data.data),
       data: data.data,
       status: NotificationStatus.PENDING,
-      priority: data.priority || 'normal',
+      priority: data.priority || 'normal' as any,
     });
 
     const savedNotification = await this.notificationRepository.save(notification);
+    const notificationData = Array.isArray(savedNotification) ? savedNotification[0] : savedNotification;
 
     // Queue for delivery based on preferences
     const channels = this.getEnabledChannels(preferences, data.type);
     
     for (const channel of channels) {
       await this.notificationQueue.add(`send-${channel}`, {
-        notificationId: savedNotification.id,
+        notificationId: notificationData.id,
         userId: data.userId,
         channel,
         content: {
-          title: savedNotification.title,
-          body: savedNotification.body,
-          data: savedNotification.data,
+          title: notificationData.title,
+          body: notificationData.body,
+          data: notificationData.data,
         },
       });
     }
 
     // Always send in-app notification
-    await this.inAppService.create(savedNotification);
+    await this.inAppService.create(notificationData);
   }
 
   async sendBulkNotification(data: {
@@ -138,20 +139,28 @@ export class NotificationService {
   }
 
   async updatePreferences(userId: string, preferences: any): Promise<NotificationPreference> {
-    let userPreference = await this.preferenceRepository.findOne({
+    let userPreference: NotificationPreference = await this.preferenceRepository.findOne({
       where: { userId },
     });
 
     if (!userPreference) {
-      userPreference = this.preferenceRepository.create({
+      const newPreference = this.preferenceRepository.create({
         userId,
+        enabled: true,
+        email: true,
+        sms: false,
+        push: true,
+        inApp: true,
+        quietHours: false,
         ...preferences,
       });
+      userPreference = Array.isArray(newPreference) ? newPreference[0] : newPreference;
     } else {
       Object.assign(userPreference, preferences);
     }
 
-    return await this.preferenceRepository.save(userPreference);
+    const savedPreference = await this.preferenceRepository.save(userPreference);
+    return Array.isArray(savedPreference) ? savedPreference[0] : savedPreference;
   }
 
   private async getUserPreferences(userId: string): Promise<NotificationPreference> {

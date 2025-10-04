@@ -8,19 +8,19 @@ export class EmailService {
   private transporter: any;
 
   constructor(private configService: ConfigService) {
-    const emailProvider = this.configService.get('EMAIL_PROVIDER');
+    const emailProvider = this.configService.get('EMAIL_PROVIDER') || 'smtp';
 
     if (emailProvider === 'sendgrid') {
-      sgMail.setApiKey(this.configService.get('SENDGRID_API_KEY'));
+      sgMail.setApiKey(this.configService.get('SENDGRID_API_KEY') || 'dummy-key');
     } else {
       // Use nodemailer for other providers
-      this.transporter = nodemailer.createTransporter({
-        host: this.configService.get('SMTP_HOST'),
-        port: this.configService.get('SMTP_PORT'),
-        secure: true,
+      this.transporter = nodemailer.createTransport({
+        host: this.configService.get('SMTP_HOST') || 'localhost',
+        port: parseInt(this.configService.get('SMTP_PORT')) || 587,
+        secure: false,
         auth: {
-          user: this.configService.get('SMTP_USER'),
-          pass: this.configService.get('SMTP_PASSWORD'),
+          user: this.configService.get('SMTP_USER') || 'dummy@example.com',
+          pass: this.configService.get('SMTP_PASSWORD') || 'dummy-password',
         },
       });
     }

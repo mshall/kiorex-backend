@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, MoreThan, LessThan } from 'typeorm';
-import { Appointment } from '../entities/appointment.entity';
+import { Appointment, AppointmentStatus } from '../entities/appointment.entity';
 import { AppointmentSlot, SlotStatus } from '../entities/appointment-slot.entity';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Injectable()
 export class CalendarService {
@@ -130,7 +130,7 @@ export class CalendarService {
     return {
       availability: Object.entries(groupedSlots).map(([date, slots]) => ({
         date,
-        slots: slots.sort((a, b) => a.startTime.getTime() - b.startTime.getTime()),
+        slots: (slots as any[]).sort((a, b) => a.startTime.getTime() - b.startTime.getTime()),
       })),
     };
   }
@@ -144,7 +144,7 @@ export class CalendarService {
       where: {
         providerId,
         startTime: Between(startDate, endDate),
-        status: Between('scheduled', 'in_progress'),
+        status: Between(AppointmentStatus.SCHEDULED, AppointmentStatus.IN_PROGRESS),
       },
       order: { startTime: 'ASC' },
     });

@@ -1,0 +1,108 @@
+
+> notification-service@1.0.0 start:dev
+> nest start --watch
+
+[2J[3J[H[[90m3:07:18 AM[0m] Starting compilation in watch mode...
+
+[96msrc/controllers/notification.controller.ts[0m:[93m13[0m:[93m30[0m - [91merror[0m[90m TS2307: [0mCannot find module '../guards/jwt-auth.guard' or its corresponding type declarations.
+
+[7m13[0m import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+[7m  [0m [91m                             ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/controllers/notification.controller.ts[0m:[93m14[0m:[93m29[0m - [91merror[0m[90m TS2307: [0mCannot find module '../decorators/current-user.decorator' or its corresponding type declarations.
+
+[7m14[0m import { CurrentUser } from '../decorators/current-user.decorator';
+[7m  [0m [91m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/services/email.service.ts[0m:[93m17[0m:[93m37[0m - [91merror[0m[90m TS2551: [0mProperty 'createTransporter' does not exist on type 'typeof import("/Users/mohamedelshall/Library/Mobile Documents/com~apple~CloudDocs/Documents/Me/Personal/Work/Kiorex/SourceCode/Backend/kiorex-backend/services/notification-service/node_modules/@types/nodemailer/index")'. Did you mean 'createTransport'?
+
+[7m17[0m       this.transporter = nodemailer.createTransporter({
+[7m  [0m [91m                                    ~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/nodemailer/index.d.ts[0m:[93m45[0m:[93m17[0m
+    [7m45[0m export function createTransport(
+    [7m  [0m [96m                ~~~~~~~~~~~~~~~[0m
+    'createTransport' is declared here.
+
+[96msrc/services/notification.service.ts[0m:[93m51[0m:[93m54[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  Overload 1 of 3, '(entityLikeArray: DeepPartial<Notification>[]): Notification[]', gave the following error.
+    Object literal may only specify known properties, and 'userId' does not exist in type 'DeepPartial<Notification>[]'.
+  Overload 2 of 3, '(entityLike: DeepPartial<Notification>): Notification', gave the following error.
+    Type 'string' is not assignable to type 'NotificationPriority'.
+
+[7m51[0m     const notification = this.notificationRepository.create({
+[7m  [0m [91m                                                     ~~~~~~[0m
+
+  [96msrc/entities/notification.entity.ts[0m:[93m74[0m:[93m3[0m
+    [7m74[0m   priority: NotificationPriority;
+    [7m  [0m [96m  ~~~~~~~~[0m
+    The expected type comes from property 'priority' which is declared here on type 'DeepPartial<Notification>'
+
+[96msrc/services/notification.service.ts[0m:[93m68[0m:[93m43[0m - [91merror[0m[90m TS2339: [0mProperty 'id' does not exist on type 'Notification[]'.
+
+[7m68[0m         notificationId: savedNotification.id,
+[7m  [0m [91m                                          ~~[0m
+
+[96msrc/services/notification.service.ts[0m:[93m72[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'title' does not exist on type 'Notification[]'.
+
+[7m72[0m           title: savedNotification.title,
+[7m  [0m [91m                                   ~~~~~[0m
+
+[96msrc/services/notification.service.ts[0m:[93m73[0m:[93m35[0m - [91merror[0m[90m TS2339: [0mProperty 'body' does not exist on type 'Notification[]'.
+
+[7m73[0m           body: savedNotification.body,
+[7m  [0m [91m                                  ~~~~[0m
+
+[96msrc/services/notification.service.ts[0m:[93m74[0m:[93m35[0m - [91merror[0m[90m TS2339: [0mProperty 'data' does not exist on type 'Notification[]'.
+
+[7m74[0m           data: savedNotification.data,
+[7m  [0m [91m                                  ~~~~[0m
+
+[96msrc/services/notification.service.ts[0m:[93m80[0m:[93m36[0m - [91merror[0m[90m TS2345: [0mArgument of type 'Notification[]' is not assignable to parameter of type 'Notification'.
+  Type 'Notification[]' is missing the following properties from type 'Notification': id, userId, type, title, and 15 more.
+
+[7m80[0m     await this.inAppService.create(savedNotification);
+[7m  [0m [91m                                   ~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/services/notification.service.ts[0m:[93m146[0m:[93m7[0m - [91merror[0m[90m TS2740: [0mType 'NotificationPreference[]' is missing the following properties from type 'NotificationPreference': id, userId, enabled, email, and 9 more.
+
+[7m146[0m       userPreference = this.preferenceRepository.create({
+[7m   [0m [91m      ~~~~~~~~~~~~~~[0m
+
+[96msrc/services/push-notification.service.ts[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module 'firebase-admin' or its corresponding type declarations.
+
+[7m3[0m import * as admin from 'firebase-admin';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~[0m
+
+[96msrc/services/sms.service.ts[0m:[93m10[0m:[93m25[0m - [91merror[0m[90m TS2349: [0mThis expression is not callable.
+  Type 'typeof TwilioSDK' has no call signatures.
+
+[7m10[0m     this.twilioClient = twilio(
+[7m  [0m [91m                        ~~~~~~[0m
+
+  [96msrc/services/sms.service.ts[0m:[93m3[0m:[93m1[0m
+    [7m3[0m import * as twilio from 'twilio';
+    [7m [0m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    Type originates at this import. A namespace-style import cannot be called or constructed, and will cause a failure at runtime. Consider using a default import or import require here instead.
+
+[96msrc/services/template.service.ts[0m:[93m54[0m:[93m53[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  Overload 1 of 3, '(entityLikeArray: DeepPartial<NotificationTemplate>[]): NotificationTemplate[]', gave the following error.
+    Argument of type '{ name: string; displayName: string; type: string; subject: string; content: string; htmlContent?: string; variables?: any[]; }' is not assignable to parameter of type 'DeepPartial<NotificationTemplate>[]'.
+      Type '{ name: string; displayName: string; type: string; subject: string; content: string; htmlContent?: string; variables?: any[]; }' is missing the following properties from type 'DeepPartial<NotificationTemplate>[]': length, pop, push, concat, and 29 more.
+  Overload 2 of 3, '(entityLike: DeepPartial<NotificationTemplate>): NotificationTemplate', gave the following error.
+    Argument of type '{ name: string; displayName: string; type: string; subject: string; content: string; htmlContent?: string; variables?: any[]; }' is not assignable to parameter of type 'DeepPartial<NotificationTemplate>'.
+      Type '{ name: string; displayName: string; type: string; subject: string; content: string; htmlContent?: string; variables?: any[]; }' is not assignable to type '{ id?: string; name?: string; displayName?: string; type?: DeepPartial<TemplateType>; subject?: string; content?: string; htmlContent?: string; variables?: DeepPartial<{ name: string; type: string; required: boolean; defaultValue?: string; }[]>; ... 4 more ...; updatedAt?: DeepPartial<...>; }'.
+        Types of property 'type' are incompatible.
+          Type 'string' is not assignable to type 'DeepPartial<TemplateType>'.
+
+[7m54[0m     const template = this.templateRepository.create(templateData);
+[7m  [0m [91m                                                    ~~~~~~~~~~~~[0m
+
+
+[96msrc/services/template.service.ts[0m:[93m55[0m:[93m5[0m - [91merror[0m[90m TS2740: [0mType 'NotificationTemplate[]' is missing the following properties from type 'NotificationTemplate': id, name, displayName, type, and 9 more.
+
+[7m55[0m     return await this.templateRepository.save(template);
+[7m  [0m [91m    ~~~~~~[0m
+
+[[90m3:07:37 AM[0m] Found 14 errors. Watching for file changes.
+

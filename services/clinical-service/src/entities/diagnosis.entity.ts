@@ -28,8 +28,11 @@ export class Diagnosis {
   @Column('uuid')
   patientId: string;
 
+  @Column('uuid')
+  medicalRecordId: string;
+
   @ManyToOne(() => MedicalRecord)
-  @JoinColumn()
+  @JoinColumn({ name: 'medicalRecordId' })
   medicalRecord: MedicalRecord;
 
   @Column()
