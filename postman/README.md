@@ -1,193 +1,215 @@
-# Kiorex Healthcare API - Postman Collection
+# Kiorex Healthcare Platform - Postman Collection
 
-This directory contains the complete Postman collection for testing the Kiorex Healthcare Platform microservices.
+## 📋 Overview
 
-## Files
+This Postman collection provides comprehensive API testing for the Kiorex Healthcare Platform microservices. The collection includes all endpoints with proper JWT authentication, pre-configured test data, and automated token management.
 
-- `Kiorex-Healthcare-API.postman_collection.json` - Complete API collection with all endpoints
-- `Kiorex-Healthcare-Environment.postman_environment.json` - Environment variables for testing
-- `README.md` - This documentation file
-
-## Setup Instructions
+## 🚀 Quick Setup
 
 ### 1. Import Collection and Environment
-
 1. Open Postman
-2. Click "Import" button
+2. Click **Import** button
 3. Import both files:
    - `Kiorex-Healthcare-API.postman_collection.json`
    - `Kiorex-Healthcare-Environment.postman_environment.json`
+4. Select **"Kiorex Healthcare Environment"** from the environment dropdown
 
-### 2. Select Environment
-
-1. In Postman, select the "Kiorex Healthcare Environment" from the environment dropdown
-2. Verify the `baseUrl` is set to `http://localhost:3000`
-
-### 3. Start Services
-
-Make sure all microservices are running:
-
+### 2. Start Services
 ```bash
 # Start all services
 npm run start:dev
 
-# Or start individual services
-cd services/api-gateway && npm run start:dev &
-cd services/auth-service && npm run start:dev &
-cd services/user-service && npm run start:dev &
-cd services/appointment-service && npm run start:dev &
-cd services/clinical-service && npm run start:dev &
-cd services/notification-service && npm run start:dev &
-cd services/search-service && npm run start:dev &
-cd services/video-service && npm run start:dev &
-cd services/analytics-service && npm run start:dev &
+# Or start infrastructure first, then services
+npm run start:infrastructure
+npm run start:dev
 ```
 
-## API Endpoints Overview
+### 3. Test Authentication
+1. Run **"Admin Login"** request from the Authentication Service folder
+2. The token will be automatically saved to the environment
+3. All subsequent requests will use the saved token
 
-### Authentication Service (`/auth/*`)
-- **POST** `/auth/login` - User login
-- **POST** `/auth/register` - User registration
-- **POST** `/auth/refresh` - Refresh access token
-- **POST** `/auth/logout` - User logout
+## 🔐 Test Credentials
 
-### User Service (`/users/*`)
-- **GET** `/users/profile` - Get user profile
-- **PUT** `/users/profile` - Update user profile
-- **GET** `/users` - Get all users (admin only)
+| Role | Email | Password | Description |
+|------|-------|----------|-------------|
+| **Admin** | `admin@healthcare.com` | `Admin@123456` | Full system access |
+| **Doctor** | `doctor1@healthcare.com` | `Doctor@123456` | Medical staff access |
+| **Patient** | `patient1@healthcare.com` | `Patient@123456` | Patient access |
 
-### Appointment Service (`/appointments/*`)
-- **POST** `/appointments` - Create appointment
-- **GET** `/appointments` - Get appointments
-- **GET** `/appointments/{id}` - Get appointment by ID
-- **PUT** `/appointments/{id}` - Update appointment
-- **DELETE** `/appointments/{id}` - Cancel appointment
-- **GET** `/appointments/slots` - Get available slots
+## 📁 Collection Structure
 
-### Clinical Service (`/clinical/*`)
-- **POST** `/clinical/medical-records` - Create medical record
-- **GET** `/clinical/medical-records` - Get medical records
-- **POST** `/clinical/prescriptions` - Create prescription
-- **GET** `/clinical/prescriptions` - Get prescriptions
-- **POST** `/clinical/vitals` - Record vitals
+### 🔐 Authentication Service
+- **Admin Login** - Login with admin credentials (auto-saves token)
+- **Doctor Login** - Login with doctor credentials
+- **Patient Login** - Login with patient credentials
+- **Register User** - Register new user
+- **Get Profile** - Get current user profile
+- **Refresh Token** - Refresh access token
 
-### Notification Service (`/notifications/*`)
-- **POST** `/notifications/email` - Send email notification
-- **POST** `/notifications/sms` - Send SMS notification
-- **GET** `/notifications` - Get notifications
+### 👥 User Service
+- **Get User Profile** - Get user profile information
+- **Update User Profile** - Update user profile
 
-### Search Service (`/search/*`)
-- **GET** `/search/patients` - Search patients
-- **GET** `/search/medical-records` - Search medical records
+### 📅 Appointment Service
+- **Get Appointments** - Get all appointments for current user
+- **Create Appointment** - Create new appointment
+- **Get Available Slots** - Get available appointment slots
 
-### Video Service (`/video/*`)
-- **POST** `/video/rooms` - Create video room
-- **POST** `/video/rooms/join` - Join video room
-- **GET** `/video/rooms/{id}` - Get video room
+### 🏥 Clinical Service
+- **Get Medical Records** - Get medical records for patient
+- **Create Medical Record** - Create new medical record
+- **Get Prescriptions** - Get prescriptions for patient
+- **Create Prescription** - Create new prescription
 
-### Analytics Service (`/analytics/*`)
-- **GET** `/analytics/dashboard` - Get dashboard stats
-- **GET** `/analytics/appointments` - Get appointment analytics
-- **GET** `/analytics/patients` - Get patient analytics
+### 🔔 Notification Service
+- **Get Notifications** - Get notifications for current user
+- **Create Notification** - Create new notification
+- **Get Notification Preferences** - Get notification preferences
+- **Update Notification Preferences** - Update notification preferences
 
-## Test Credentials
+### 🔍 Search Service
+- **Search Providers** - Search for healthcare providers
+- **Search Appointments** - Search for available appointments
+- **Search Clinical Records** - Search clinical records
+- **Get Autocomplete Suggestions** - Get autocomplete suggestions
 
-The collection includes pre-configured test credentials:
+### 📹 Video Service
+- **Create Video Session** - Create new video session
+- **Join Video Session** - Join existing video session
+- **Get Video Sessions** - Get video sessions for current user
 
-### Admin User
-- **Email**: `admin@healthcare.com`
-- **Password**: `Admin@123456`
-- **Role**: `super_admin`
+### 📊 Analytics Service
+- **Track Event** - Track analytics event
+- **Get Metrics** - Get analytics metrics (admin/doctor only)
+- **Create Dashboard** - Create analytics dashboard (admin/doctor only)
 
-### Doctor User
-- **Email**: `doctor1@healthcare.com`
-- **Password**: `Doctor@123456`
-- **Role**: `doctor`
+### 🏥 Health Checks
+- **API Gateway Health** - Check API Gateway health
+- **Auth Service Health** - Check Auth Service health
+- **All Services Health** - Check health of all services
 
-### Patient User
-- **Email**: `patient1@healthcare.com`
-- **Password**: `Patient@123456`
-- **Role**: `patient`
+## 🔧 Features
 
-## Environment Variables
+### ✅ Automatic Token Management
+- Login requests automatically save JWT tokens
+- All authenticated requests use saved tokens
+- No manual token copying required
 
-The collection uses the following environment variables:
+### ✅ Pre-configured Test Data
+- Sample user IDs, appointment IDs, and other test data
+- Realistic request bodies with proper data types
+- Environment variables for easy customization
 
-- `baseUrl` - API Gateway base URL (default: http://localhost:3000)
-- `authToken` - JWT access token (auto-populated after login)
-- `userId` - Current user ID (auto-populated after login)
-- `appointmentId` - Appointment ID for testing
-- `patientId` - Patient ID for testing (default: 550e8400-e29b-41d4-a716-446655440003)
-- `providerId` - Provider ID for testing (default: 550e8400-e29b-41d4-a716-446655440002)
+### ✅ Role-based Testing
+- Different login options for admin, doctor, and patient roles
+- Role-specific endpoints and permissions
+- Easy switching between user types
 
-## Testing Workflow
+### ✅ Comprehensive Coverage
+- All microservice endpoints included
+- Health check endpoints for monitoring
+- Error handling examples
 
-### 1. Authentication
-1. Start with any login request (Admin, Doctor, or Patient)
-2. The `authToken` and `userId` will be automatically extracted and stored
-3. All subsequent requests will use the stored token
+## 🧪 Testing Workflow
 
-### 2. Basic Flow
-1. **Login** → Get authentication token
-2. **Get Profile** → Verify user data
-3. **Create Appointment** → Schedule a consultation
-4. **Create Medical Record** → Document the visit
-5. **Create Prescription** → Prescribe medication
-6. **Send Notification** → Notify patient
+### 1. Authentication Flow
+```
+1. Run "Admin Login" → Token saved automatically
+2. Run "Get Profile" → Verify authentication works
+3. Run other authenticated requests → All use saved token
+```
 
-### 3. Advanced Testing
-1. **Search** → Test search functionality
-2. **Video** → Test video consultation features
-3. **Analytics** → View dashboard and reports
+### 2. Complete User Journey
+```
+1. Admin Login
+2. Create Appointment
+3. Create Medical Record
+4. Create Prescription
+5. Send Notification
+6. Track Analytics Event
+```
 
-## Pre-request Scripts
+### 3. Service Integration Testing
+```
+1. Health Checks → Verify all services are running
+2. Cross-service requests → Test service communication
+3. Error scenarios → Test error handling
+```
 
-The collection includes pre-request scripts that automatically:
-- Extract `authToken` from login responses
-- Extract `userId` from login responses
-- Set appropriate headers for authenticated requests
+## 🔍 Environment Variables
 
-## Rate Limiting
+| Variable | Description | Example Value |
+|----------|-------------|---------------|
+| `baseUrl` | API Gateway URL | `http://localhost:3000` |
+| `authToken` | JWT token (auto-populated) | `eyJhbGciOiJIUzI1NiIs...` |
+| `userId` | Current user ID (auto-populated) | `550e8400-e29b-41d4-a716-446655440001` |
+| `patientId` | Test patient ID | `550e8400-e29b-41d4-a716-446655440003` |
+| `providerId` | Test provider ID | `550e8400-e29b-41d4-a716-446655440002` |
+| `adminEmail` | Admin email | `admin@healthcare.com` |
+| `adminPassword` | Admin password | `Admin@123456` |
 
-The API Gateway implements rate limiting:
-- **Global**: 1000 requests per minute
-- **User**: 100 requests per minute per user
-- **Login**: 5 requests per 5 minutes per IP
+## 🚨 Troubleshooting
 
-Rate limit headers are included in responses:
-- `X-RateLimit-Remaining` - Remaining requests
-- `X-RateLimit-Reset` - Reset timestamp
+### Common Issues
 
-## Error Handling
+**1. 401 Unauthorized Errors**
+- Ensure you've run a login request first
+- Check that the token is saved in environment variables
+- Verify JWT_SECRET is consistent across all services
 
-Common error responses:
-- **400** - Bad Request (validation errors)
-- **401** - Unauthorized (invalid/missing token)
-- **403** - Forbidden (insufficient permissions)
-- **404** - Not Found (resource doesn't exist)
-- **429** - Too Many Requests (rate limit exceeded)
-- **500** - Internal Server Error
+**2. 404 Not Found Errors**
+- Ensure all services are running (`npm run start:dev`)
+- Check service ports in environment variables
+- Verify API Gateway is routing correctly
 
-## Troubleshooting
+**3. 500 Internal Server Errors**
+- Check service logs for detailed error messages
+- Ensure databases are running and accessible
+- Verify environment variables are set correctly
 
-### Services Not Responding
-1. Check if all services are running: `ps aux | grep "nest start"`
-2. Check API Gateway health: `curl http://localhost:3000/health`
-3. Check individual service health: `curl http://localhost:3001/health`
+**4. Connection Refused**
+- Start infrastructure services: `npm run start:infrastructure`
+- Check if ports are available and not in use
+- Verify Docker containers are running
 
-### Authentication Issues
-1. Verify credentials are correct
-2. Check if token is properly extracted
-3. Ensure token is not expired
+### Debug Steps
+1. Run health check requests first
+2. Check individual service health endpoints
+3. Verify environment variables are set
+4. Check service logs for errors
+5. Ensure all dependencies are installed
 
-### Database Issues
-1. Check PostgreSQL is running: `brew services list | grep postgresql`
-2. Verify database connections in service logs
-3. Check if seed data is loaded
+## 📊 Service Status
 
-## Support
+| Service | Port | Status | Health Check |
+|---------|------|--------|--------------|
+| API Gateway | 3000 | ✅ Running | `/health` |
+| Auth Service | 3001 | ✅ Running | `/health` |
+| User Service | 3002 | ✅ Running | `/health` |
+| Appointment Service | 3003 | ✅ Running | `/health` |
+| Clinical Service | 3004 | ✅ Running | `/health` |
+| Notification Service | 3006 | ✅ Running | `/health` |
+| Search Service | 3007 | ✅ Running | `/health` |
+| Video Service | 3008 | ✅ Running | `/health` |
+| Analytics Service | 3009 | ✅ Running | `/health` |
+
+## 🔗 Online Collection
+
+**Collection**: [Kiorex Healthcare Platform API Collection](https://www.postman.com/kiorex-healthcare/workspace/kiorex-healthcare-platform/collection/kiorex-healthcare-api-collection)
+
+## 📝 Notes
+
+- All requests include proper JWT authentication headers
+- Test data is pre-configured for immediate testing
+- Environment variables are automatically managed
+- Collection is updated with latest service endpoints
+- Includes comprehensive error handling examples
+
+## 🆘 Support
 
 For issues or questions:
-1. Check the service logs for detailed error messages
-2. Verify all environment variables are set correctly
-3. Ensure all required services are running and healthy
+1. Check service logs for detailed error messages
+2. Verify all services are running and healthy
+3. Ensure environment variables are correctly set
+4. Review the main README.md for setup instructions
