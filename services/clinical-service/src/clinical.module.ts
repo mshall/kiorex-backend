@@ -6,6 +6,7 @@ import { BullModule } from '@nestjs/bull';
 import { CacheModule } from '@nestjs/cache-manager';
 import { HttpModule } from '@nestjs/axios';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import * as redisStore from 'cache-manager-redis-store';
 
 // Entities
@@ -38,6 +39,9 @@ import { DrugInteractionService } from './services/drug-interaction.service';
 
 // Processors
 import { ClinicalProcessor } from './processors/clinical.processor';
+
+// Strategies
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -93,6 +97,7 @@ import { ClinicalProcessor } from './processors/clinical.processor';
       },
     }),
     HttpModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'super-secret-jwt-key-change-in-production',
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '15m' },
@@ -114,6 +119,7 @@ import { ClinicalProcessor } from './processors/clinical.processor';
     EncryptionService,
     DrugInteractionService,
     ClinicalProcessor,
+    JwtStrategy,
   ],
   exports: [],
 })

@@ -2,8 +2,11 @@ import { Module } from '@nestjs/common';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { SearchService } from './services/search.service';
 import { SearchController } from './controllers/search.controller';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -34,8 +37,13 @@ import { SearchController } from './controllers/search.controller';
         },
       },
     ]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'super-secret-jwt-key-change-in-production',
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '15m' },
+    }),
   ],
   controllers: [SearchController],
-  providers: [SearchService],
+  providers: [SearchService, JwtStrategy],
 })
 export class SearchModule {}
