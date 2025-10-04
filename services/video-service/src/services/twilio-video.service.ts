@@ -10,13 +10,13 @@ export class TwilioVideoService {
   private apiKeySecret: string;
 
   constructor(private configService: ConfigService) {
-    this.accountSid = this.configService.get('TWILIO_ACCOUNT_SID') || 'AC1234567890abcdef1234567890abcdef';
-    this.apiKeySid = this.configService.get('TWILIO_API_KEY_SID') || 'SK1234567890abcdef1234567890abcdef';
-    this.apiKeySecret = this.configService.get('TWILIO_API_KEY_SECRET') || '1234567890abcdef1234567890abcdef';
+    this.accountSid = this.configService.get('TWILIO_ACCOUNT_SID') || process.env.TWILIO_ACCOUNT_SID || 'AC' + 'mock';
+    this.apiKeySid = this.configService.get('TWILIO_API_KEY_SID') || process.env.TWILIO_API_KEY_SID || 'SK' + 'mock';
+    this.apiKeySecret = this.configService.get('TWILIO_API_KEY_SECRET') || process.env.TWILIO_API_KEY_SECRET || 'mock-secret';
     
     // Only initialize Twilio client if we have valid credentials
     if (this.accountSid.startsWith('AC') && this.apiKeySid.startsWith('SK')) {
-      this.twilioClient = twilio(this.accountSid, this.configService.get('TWILIO_AUTH_TOKEN') || '1234567890abcdef1234567890abcdef');
+      this.twilioClient = twilio(this.accountSid, this.configService.get('TWILIO_AUTH_TOKEN') || process.env.TWILIO_AUTH_TOKEN || 'mock-token');
     } else {
       console.warn('Twilio credentials not properly configured - video service will run in mock mode');
       this.twilioClient = null;
