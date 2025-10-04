@@ -8,8 +8,8 @@ export class SmsService {
 
   constructor(private configService: ConfigService) {
     this.twilioClient = twilio(
-      this.configService.get('TWILIO_ACCOUNT_SID') || 'AC1234567890abcdef1234567890abcdef',
-      this.configService.get('TWILIO_AUTH_TOKEN') || '1234567890abcdef1234567890abcdef',
+      this.configService.get('TWILIO_ACCOUNT_SID') || 'your-twilio-account-sid',
+      this.configService.get('TWILIO_AUTH_TOKEN') || 'your-twilio-auth-token',
     );
   }
 

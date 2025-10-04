@@ -10,11 +10,11 @@ export class TwilioVideoService {
   private apiKeySecret: string;
 
   constructor(private configService: ConfigService) {
-    this.accountSid = this.configService.get('TWILIO_ACCOUNT_SID') || 'AC1234567890abcdef1234567890abcdef';
-    this.apiKeySid = this.configService.get('TWILIO_API_KEY_SID') || 'SK1234567890abcdef1234567890abcdef';
-    this.apiKeySecret = this.configService.get('TWILIO_API_KEY_SECRET') || '1234567890abcdef1234567890abcdef';
+    this.accountSid = this.configService.get('TWILIO_ACCOUNT_SID') || 'your-twilio-account-sid';
+    this.apiKeySid = this.configService.get('TWILIO_API_KEY_SID') || 'your-twilio-api-key-sid';
+    this.apiKeySecret = this.configService.get('TWILIO_API_KEY_SECRET') || 'your-twilio-api-key-secret';
     
-    this.twilioClient = twilio(this.accountSid, this.configService.get('TWILIO_AUTH_TOKEN') || '1234567890abcdef1234567890abcdef');
+    this.twilioClient = twilio(this.accountSid, this.configService.get('TWILIO_AUTH_TOKEN') || 'your-twilio-auth-token');
   }
 
   async createRoom(roomName: string, options?: any): Promise<any> {

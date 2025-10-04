@@ -19,7 +19,7 @@ const twilio_1 = __importDefault(require("twilio"));
 let SmsService = class SmsService {
     constructor(configService) {
         this.configService = configService;
-        this.twilioClient = (0, twilio_1.default)(this.configService.get('TWILIO_ACCOUNT_SID') || 'AC1234567890abcdef1234567890abcdef', this.configService.get('TWILIO_AUTH_TOKEN') || '1234567890abcdef1234567890abcdef');
+        this.twilioClient = (0, twilio_1.default)(this.configService.get('TWILIO_ACCOUNT_SID') || 'your-twilio-account-sid', this.configService.get('TWILIO_AUTH_TOKEN') || 'your-twilio-auth-token');
     }
     async sendSms(data) {
         await this.twilioClient.messages.create({
