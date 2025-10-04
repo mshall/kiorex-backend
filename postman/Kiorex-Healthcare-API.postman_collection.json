@@ -372,6 +372,99 @@
       ]
     },
     {
+      "name": "💳 Payment Service",
+      "item": [
+        {
+          "name": "Get Payments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments"]
+            },
+            "description": "Get all payments for current user"
+          }
+        },
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 150.00,\n  \"currency\": \"USD\",\n  \"description\": \"Consultation fee\",\n  \"appointmentId\": \"{{appointmentId}}\",\n  \"paymentMethodId\": \"pm_1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments"]
+            },
+            "description": "Create a new payment"
+          }
+        },
+        {
+          "name": "Get Payment Methods",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/payments/payment-methods",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "payment-methods"]
+            },
+            "description": "Get user's payment methods"
+          }
+        },
+        {
+          "name": "Create Refund",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentId\": \"pi_1234567890\",\n  \"amount\": 75.00,\n  \"reason\": \"Patient cancelled appointment\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/refunds",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "refunds"]
+            },
+            "description": "Create a refund for a payment"
+          }
+        }
+      ]
+    },
+    {
       "name": "🏥 Clinical Service",
       "item": [
         {

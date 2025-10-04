@@ -56,6 +56,12 @@ npm run start:dev
 - **Create Appointment** - Create new appointment
 - **Get Available Slots** - Get available appointment slots
 
+### 💳 Payment Service
+- **Get Payments** - Get all payments for current user
+- **Create Payment** - Create new payment
+- **Get Payment Methods** - Get user's payment methods
+- **Create Refund** - Create refund for payment
+
 ### 🏥 Clinical Service
 - **Get Medical Records** - Get medical records for patient
 - **Create Medical Record** - Create new medical record
