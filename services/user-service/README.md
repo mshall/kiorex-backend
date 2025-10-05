@@ -36,47 +36,59 @@ The User Service is a comprehensive user management microservice for the Kiorex 
 ## API Endpoints
 
 ### User Management
-- `GET /users` - Get all users (with pagination and filtering)
-- `GET /users/:id` - Get specific user by ID
-- `POST /users` - Create new user
-- `PUT /users/:id` - Update user information
-- `DELETE /users/:id` - Soft delete user (admin only)
-- `PATCH /users/:id/status` - Update user status (active/inactive)
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/users` | Get all users (with pagination and filtering) | JWT Required |
+| `GET` | `/users/:id` | Get specific user by ID | JWT Required |
+| `POST` | `/users` | Create new user | JWT Required |
+| `PUT` | `/users/:id` | Update user information | JWT Required |
+| `DELETE` | `/users/:id` | Soft delete user (admin only) | JWT Required |
+| `PATCH` | `/users/:id/status` | Update user status (active/inactive) | JWT Required |
 
 ### Profile Management
-- `GET /users/:id/profile` - Get user profile
-- `PUT /users/:id/profile` - Update user profile
-- `POST /users/:id/avatar` - Upload profile picture
-- `DELETE /users/:id/avatar` - Remove profile picture
-- `GET /users/:id/preferences` - Get user preferences
-- `PUT /users/:id/preferences` - Update user preferences
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/users/:id/profile` | Get user profile | JWT Required |
+| `PUT` | `/users/:id/profile` | Update user profile | JWT Required |
+| `POST` | `/users/:id/avatar` | Upload profile picture | JWT Required |
+| `DELETE` | `/users/:id/avatar` | Remove profile picture | JWT Required |
+| `GET` | `/users/:id/preferences` | Get user preferences | JWT Required |
+| `PUT` | `/users/:id/preferences` | Update user preferences | JWT Required |
 
 ### Healthcare-Specific Endpoints
-- `GET /users/:id/medical-info` - Get patient medical information
-- `PUT /users/:id/medical-info` - Update medical information
-- `GET /users/:id/insurance` - Get insurance information
-- `PUT /users/:id/insurance` - Update insurance information
-- `GET /users/:id/emergency-contacts` - Get emergency contacts
-- `POST /users/:id/emergency-contacts` - Add emergency contact
-- `PUT /users/:id/emergency-contacts/:contactId` - Update emergency contact
-- `DELETE /users/:id/emergency-contacts/:contactId` - Remove emergency contact
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/users/:id/medical-info` | Get patient medical information | JWT Required |
+| `PUT` | `/users/:id/medical-info` | Update medical information | JWT Required |
+| `GET` | `/users/:id/insurance` | Get insurance information | JWT Required |
+| `PUT` | `/users/:id/insurance` | Update insurance information | JWT Required |
+| `GET` | `/users/:id/emergency-contacts` | Get emergency contacts | JWT Required |
+| `POST` | `/users/:id/emergency-contacts` | Add emergency contact | JWT Required |
+| `PUT` | `/users/:id/emergency-contacts/:contactId` | Update emergency contact | JWT Required |
+| `DELETE` | `/users/:id/emergency-contacts/:contactId` | Remove emergency contact | JWT Required |
 
 ### Provider Management
-- `GET /providers` - Get all healthcare providers
-- `GET /providers/:id` - Get specific provider
-- `PUT /providers/:id/credentials` - Update provider credentials
-- `GET /providers/:id/specialties` - Get provider specialties
-- `POST /providers/:id/specialties` - Add specialty
-- `GET /providers/:id/availability` - Get provider availability
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/providers` | Get all healthcare providers | JWT Required |
+| `GET` | `/providers/:id` | Get specific provider | JWT Required |
+| `PUT` | `/providers/:id/credentials` | Update provider credentials | JWT Required |
+| `GET` | `/providers/:id/specialties` | Get provider specialties | JWT Required |
+| `POST` | `/providers/:id/specialties` | Add specialty | JWT Required |
+| `GET` | `/providers/:id/availability` | Get provider availability | JWT Required |
 
 ### Search & Filtering
-- `GET /users/search` - Search users by various criteria
-- `GET /users/filter` - Filter users by role, status, department
-- `GET /users/export` - Export user data (admin only)
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/users/search` | Search users by various criteria | JWT Required |
+| `GET` | `/users/filter` | Filter users by role, status, department | JWT Required |
+| `GET` | `/users/export` | Export user data (admin only) | JWT Required |
 
 ### Health & Monitoring
-- `GET /users/health` - Service health check
-- `GET /users/metrics` - User service metrics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/users/health` | Service health check | None |
+| `GET` | `/users/metrics` | User service metrics | JWT Required |
 
 ## Installation & Setup Guide
 

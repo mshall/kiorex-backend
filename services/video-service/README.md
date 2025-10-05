@@ -37,57 +37,73 @@ The Video Service is a comprehensive video conferencing and telehealth microserv
 ## API Endpoints
 
 ### Video Sessions
-- `GET /video/sessions` - Get all video sessions
-- `GET /video/sessions/:id` - Get specific video session
-- `POST /video/sessions` - Create new video session
-- `PUT /video/sessions/:id` - Update video session
-- `DELETE /video/sessions/:id` - End video session
-- `POST /video/sessions/:id/join` - Join video session
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/video/sessions` | Get all video sessions | JWT Required |
+| `GET` | `/video/sessions/:id` | Get specific video session | JWT Required |
+| `POST` | `/video/sessions` | Create new video session | JWT Required |
+| `PUT` | `/video/sessions/:id` | Update video session | JWT Required |
+| `DELETE` | `/video/sessions/:id` | End video session | JWT Required |
+| `POST` | `/video/sessions/:id/join` | Join video session | JWT Required |
 
 ### Session Management
-- `POST /video/sessions/:id/invite` - Invite participants to session
-- `DELETE /video/sessions/:id/participants/:participantId` - Remove participant
-- `GET /video/sessions/:id/participants` - Get session participants
-- `POST /video/sessions/:id/start` - Start video session
-- `POST /video/sessions/:id/end` - End video session
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `POST` | `/video/sessions/:id/invite` | Invite participants to session | JWT Required |
+| `DELETE` | `/video/sessions/:id/participants/:participantId` | Remove participant | JWT Required |
+| `GET` | `/video/sessions/:id/participants` | Get session participants | JWT Required |
+| `POST` | `/video/sessions/:id/start` | Start video session | JWT Required |
+| `POST` | `/video/sessions/:id/end` | End video session | JWT Required |
 
 ### Recording Management
-- `GET /video/recordings` - Get all video recordings
-- `GET /video/recordings/:id` - Get specific recording
-- `POST /video/sessions/:id/start-recording` - Start session recording
-- `POST /video/sessions/:id/stop-recording` - Stop session recording
-- `GET /video/recordings/:id/download` - Download video recording
-- `DELETE /video/recordings/:id` - Delete video recording
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/video/recordings` | Get all video recordings | JWT Required |
+| `GET` | `/video/recordings/:id` | Get specific recording | JWT Required |
+| `POST` | `/video/sessions/:id/start-recording` | Start session recording | JWT Required |
+| `POST` | `/video/sessions/:id/stop-recording` | Stop session recording | JWT Required |
+| `GET` | `/video/recordings/:id/download` | Download video recording | JWT Required |
+| `DELETE` | `/video/recordings/:id` | Delete video recording | JWT Required |
 
 ### Provider Management
-- `GET /video/providers` - Get all video-enabled providers
-- `GET /video/providers/:id/availability` - Get provider availability
-- `POST /video/providers/:id/availability` - Set provider availability
-- `GET /video/providers/:id/sessions` - Get provider video sessions
-- `POST /video/providers/:id/status` - Update provider status
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/video/providers` | Get all video-enabled providers | JWT Required |
+| `GET` | `/video/providers/:id/availability` | Get provider availability | JWT Required |
+| `POST` | `/video/providers/:id/availability` | Set provider availability | JWT Required |
+| `GET` | `/video/providers/:id/sessions` | Get provider video sessions | JWT Required |
+| `POST` | `/video/providers/:id/status` | Update provider status | JWT Required |
 
 ### Patient Management
-- `GET /video/patients/:id/sessions` - Get patient video sessions
-- `POST /video/patients/:id/join-session` - Patient join session
-- `GET /video/patients/:id/history` - Get patient video history
-- `POST /video/patients/:id/feedback` - Submit session feedback
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/video/patients/:id/sessions` | Get patient video sessions | JWT Required |
+| `POST` | `/video/patients/:id/join-session` | Patient join session | JWT Required |
+| `GET` | `/video/patients/:id/history` | Get patient video history | JWT Required |
+| `POST` | `/video/patients/:id/feedback` | Submit session feedback | JWT Required |
 
 ### Telehealth Features
-- `POST /video/telehealth/consultation` - Start telehealth consultation
-- `GET /video/telehealth/consultations` - Get telehealth consultations
-- `POST /video/telehealth/consultations/:id/prescription` - Generate prescription
-- `POST /video/telehealth/consultations/:id/notes` - Add clinical notes
-- `GET /video/telehealth/consultations/:id/summary` - Get consultation summary
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `POST` | `/video/telehealth/consultation` | Start telehealth consultation | JWT Required |
+| `GET` | `/video/telehealth/consultations` | Get telehealth consultations | JWT Required |
+| `POST` | `/video/telehealth/consultations/:id/prescription` | Generate prescription | JWT Required |
+| `POST` | `/video/telehealth/consultations/:id/notes` | Add clinical notes | JWT Required |
+| `GET` | `/video/telehealth/consultations/:id/summary` | Get consultation summary | JWT Required |
 
 ### Quality & Performance
-- `GET /video/quality/metrics` - Get video quality metrics
-- `GET /video/performance/stats` - Get performance statistics
-- `POST /video/quality/optimize` - Optimize video quality
-- `GET /video/bandwidth/usage` - Get bandwidth usage statistics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/video/quality/metrics` | Get video quality metrics | JWT Required |
+| `GET` | `/video/performance/stats` | Get performance statistics | JWT Required |
+| `POST` | `/video/quality/optimize` | Optimize video quality | JWT Required |
+| `GET` | `/video/bandwidth/usage` | Get bandwidth usage statistics | JWT Required |
 
 ### Health & Monitoring
-- `GET /video/health` - Service health check
-- `GET /video/metrics` - Video service metrics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/video/health` | Service health check | None |
+| `GET` | `/video/metrics` | Video service metrics | JWT Required |
 
 ## Installation & Setup Guide
 
