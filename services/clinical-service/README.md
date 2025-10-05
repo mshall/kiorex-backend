@@ -1,134 +1,373 @@
-# Clinical Service
+# 🏥 Clinical Service
 
-A comprehensive clinical management microservice for the Kiorex healthcare platform.
+## Description
 
-## Features
+The Clinical Service is a comprehensive medical records and clinical data management microservice for the Kiorex Healthcare Platform. It handles electronic health records (EHR), medical history, vital signs, prescriptions, clinical notes, diagnoses, treatments, and all clinical workflows for healthcare providers and patients.
 
-- **Medical Records Management**: Complete EHR with encryption and audit trails
-- **Prescription System**: E-prescribing with drug interaction checking
-- **Lab Results**: Order tracking and result management
-- **Clinical Notes**: SOAP notes and encounter documentation
-- **Diagnosis Management**: ICD-10 coding and problem lists
-- **FHIR Compliance**: Healthcare data interoperability
-- **Security**: Field-level encryption for PHI/PII
-- **Audit Logging**: Complete access tracking for HIPAA compliance
-- **Drug Safety**: Interaction checking and controlled substance monitoring
-- **Patient Summary**: Comprehensive health overview and history
+## Use Cases & Features
+
+### Electronic Health Records (EHR)
+- **Patient Medical Records**: Complete patient medical history and records
+- **Clinical Documentation**: Comprehensive clinical documentation and notes
+- **Medical History**: Complete medical history tracking and management
+- **Allergy Management**: Patient allergy tracking and medication interactions
+- **Immunization Records**: Vaccination history and immunization tracking
+
+### Clinical Workflows
+- **Vital Signs**: Real-time vital signs monitoring and recording
+- **Clinical Notes**: Provider clinical notes and observations
+- **Diagnosis Management**: Diagnosis coding and management (ICD-10)
+- **Treatment Plans**: Comprehensive treatment plan development and tracking
+- **Progress Notes**: Patient progress tracking and documentation
+
+### Prescription Management
+- **Electronic Prescriptions**: Digital prescription generation and management
+- **Medication History**: Complete patient medication history
+- **Drug Interactions**: Medication interaction checking and alerts
+- **Prescription Refills**: Automated prescription refill management
+- **Medication Adherence**: Patient medication adherence tracking
+
+### Clinical Decision Support
+- **Clinical Guidelines**: Evidence-based clinical guidelines and protocols
+- **Alert Systems**: Clinical alerts and reminders for providers
+- **Risk Assessment**: Patient risk assessment and stratification
+- **Quality Measures**: Clinical quality measures and reporting
+- **Outcome Tracking**: Patient outcome tracking and analytics
+
+### Healthcare-Specific Features
+- **FHIR Compliance**: HL7 FHIR standard compliance for interoperability
+- **Clinical Coding**: ICD-10, CPT, and other clinical coding support
+- **Care Coordination**: Multi-provider care coordination and communication
+- **Clinical Pathways**: Standardized clinical pathways and protocols
+- **Evidence-Based Medicine**: Integration with evidence-based medicine resources
 
 ## API Endpoints
 
-### Medical Records
-- `POST /medical-records` - Create medical record
-- `GET /medical-records/:id` - Get medical record by ID
-- `GET /medical-records/patient/:patientId` - Get patient medical records
-- `PUT /medical-records/:id` - Update medical record
-- `GET /medical-records/patient/:patientId/summary` - Get patient summary
-- `GET /medical-records/patient/:patientId/export-fhir` - Export to FHIR format
+### Patient Records
+- `GET /patients/:id/records` - Get patient medical records
+- `POST /patients/:id/records` - Create new medical record
+- `PUT /patients/:id/records/:recordId` - Update medical record
+- `DELETE /patients/:id/records/:recordId` - Delete medical record
+- `GET /patients/:id/history` - Get patient medical history
 
-### Prescriptions
-- `POST /prescriptions` - Create prescription
-- `POST /prescriptions/:id/refill` - Refill prescription
-- `POST /prescriptions/:id/cancel` - Cancel prescription
-- `GET /prescriptions/patient/:patientId` - Get patient prescriptions
-- `POST /prescriptions/check-interactions` - Check drug interactions
-- `GET /prescriptions/reports/controlled-substances` - Get controlled substance report
-
-### Lab Results
-- `POST /lab-results` - Create lab result
-- `GET /lab-results/:id` - Get lab result by ID
-- `GET /lab-results/patient/:patientId` - Get patient lab results
-- `PUT /lab-results/:id` - Update lab result
-- `POST /lab-results/:id/interpret` - Add interpretation
+### Vital Signs
+- `GET /patients/:id/vitals` - Get patient vital signs
+- `POST /patients/:id/vitals` - Record new vital signs
+- `PUT /patients/:id/vitals/:vitalId` - Update vital signs
+- `GET /patients/:id/vitals/history` - Get vital signs history
+- `POST /patients/:id/vitals/bulk` - Bulk vital signs entry
 
 ### Clinical Notes
-- `POST /clinical-notes` - Create clinical note
-- `GET /clinical-notes/:id` - Get clinical note by ID
-- `GET /clinical-notes/patient/:patientId` - Get patient clinical notes
-- `PUT /clinical-notes/:id` - Update clinical note
+- `GET /patients/:id/notes` - Get patient clinical notes
+- `POST /patients/:id/notes` - Create clinical note
+- `PUT /patients/:id/notes/:noteId` - Update clinical note
+- `GET /providers/:id/notes` - Get provider clinical notes
+- `POST /notes/:id/sign` - Sign clinical note
 
-## Database Access
+### Prescriptions
+- `GET /patients/:id/prescriptions` - Get patient prescriptions
+- `POST /patients/:id/prescriptions` - Create new prescription
+- `PUT /prescriptions/:id` - Update prescription
+- `POST /prescriptions/:id/refill` - Request prescription refill
+- `GET /prescriptions/:id/interactions` - Check drug interactions
 
-To access the clinical service database directly:
+### Diagnoses
+- `GET /patients/:id/diagnoses` - Get patient diagnoses
+- `POST /patients/:id/diagnoses` - Add new diagnosis
+- `PUT /diagnoses/:id` - Update diagnosis
+- `GET /diagnoses/codes` - Get diagnosis codes (ICD-10)
+- `POST /diagnoses/:id/resolve` - Resolve diagnosis
 
-```bash
-# Using psql
-psql -h localhost -p 5432 -U postgres -d clinical_db
+### Treatment Plans
+- `GET /patients/:id/treatment-plans` - Get patient treatment plans
+- `POST /patients/:id/treatment-plans` - Create treatment plan
+- `PUT /treatment-plans/:id` - Update treatment plan
+- `POST /treatment-plans/:id/complete` - Mark treatment as completed
+- `GET /treatment-plans/:id/progress` - Get treatment progress
 
-# Using Docker
-docker exec -it healthcare-postgres psql -U postgres -d clinical_db
+### Clinical Reports
+- `GET /reports/clinical-summary` - Clinical summary reports
+- `GET /reports/patient-outcomes` - Patient outcome reports
+- `GET /reports/quality-measures` - Quality measure reports
+- `GET /reports/clinical-analytics` - Clinical analytics reports
+- `GET /reports/export` - Export clinical data
 
-# Connection string
-postgresql://postgres:postgres123@localhost:5432/clinical_db
+### Health & Monitoring
+- `GET /clinical/health` - Service health check
+- `GET /clinical/metrics` - Clinical service metrics
+
+## Installation & Setup Guide
+
+### Prerequisites
+- Node.js 18+
+- npm 9+
+- PostgreSQL 15+
+- Redis 7+
+- Kafka (for event streaming)
+
+### Local Development Setup
+
+1. **Navigate to service directory**
+   ```bash
+   cd services/clinical-service
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Configuration**
+   Create `.env` file with required variables:
+   ```env
+   NODE_ENV=development
+   PORT=3006
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=postgres
+   DB_PASSWORD=postgres123
+   DB_DATABASE=clinical_db
+   REDIS_HOST=localhost
+   REDIS_PORT=6379
+   REDIS_PASSWORD=redis123
+   JWT_SECRET=super-secret-jwt-key-change-in-production
+   JWT_EXPIRES_IN=24h
+   KAFKA_BROKERS=localhost:9092
+   FHIR_SERVER_URL=http://localhost:8080/fhir
+   ```
+
+4. **Database Setup**
+   ```bash
+   # Run database migrations
+   npm run migration:run
+   
+   # Seed initial data
+   npm run seed:run
+   ```
+
+5. **Start the service**
+   ```bash
+   # Development mode
+   npm run start:dev
+   
+   # Production mode
+   npm run build
+   npm run start:prod
+   ```
+
+### Docker Setup
+
+1. **Build Docker image**
+   ```bash
+   docker build -t healthcare-clinical-service .
+   ```
+
+2. **Run with Docker Compose**
+   ```bash
+   docker-compose up clinical-service
+   ```
+
+### Database Schema
+
+#### Medical Records Table
+```sql
+CREATE TABLE medical_records (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  patient_id UUID NOT NULL,
+  provider_id UUID NOT NULL,
+  record_type VARCHAR(50) NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  content TEXT NOT NULL,
+  status VARCHAR(20) NOT NULL,
+  is_signed BOOLEAN DEFAULT false,
+  signed_by UUID,
+  signed_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
-### Database Tables
-- `medical_records` - Patient medical records
-- `prescriptions` - Prescription data
-- `lab_results` - Laboratory test results
-- `clinical_notes` - Clinical documentation
-- `vitals` - Vital signs measurements
-- `allergies` - Patient allergy information
-- `medications` - Medication history
-- `diagnoses` - Diagnosis records
-- `procedures` - Medical procedures
-- `immunizations` - Vaccination records
-
-## Environment Variables
-
-- `DB_HOST` - Database host
-- `DB_PORT` - Database port
-- `DB_USERNAME` - Database username
-- `DB_PASSWORD` - Database password
-- `DB_NAME` - Database name
-- `REDIS_HOST` - Redis host
-- `REDIS_PORT` - Redis port
-- `KAFKA_BROKER` - Kafka broker URL
-- `JWT_SECRET` - JWT secret key
-- `ENCRYPTION_KEY` - Encryption key for PHI data
-
-## Running the Service
-
-```bash
-# Install dependencies
-npm install
-
-# Start in development mode
-npm run start:dev
-
-# Build and start in production
-npm run build
-npm run start:prod
+#### Vital Signs Table
+```sql
+CREATE TABLE vital_signs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  patient_id UUID NOT NULL,
+  provider_id UUID NOT NULL,
+  temperature DECIMAL(4,1),
+  blood_pressure_systolic INTEGER,
+  blood_pressure_diastolic INTEGER,
+  heart_rate INTEGER,
+  respiratory_rate INTEGER,
+  oxygen_saturation DECIMAL(4,1),
+  weight DECIMAL(5,2),
+  height DECIMAL(5,2),
+  bmi DECIMAL(4,1),
+  recorded_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
-## Docker
-
-```bash
-# Build image
-docker build -t clinical-service .
-
-# Run container
-docker run -p 3006:3006 clinical-service
+#### Prescriptions Table
+```sql
+CREATE TABLE prescriptions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  patient_id UUID NOT NULL,
+  provider_id UUID NOT NULL,
+  medication_name VARCHAR(200) NOT NULL,
+  dosage VARCHAR(100) NOT NULL,
+  frequency VARCHAR(100) NOT NULL,
+  duration VARCHAR(100),
+  instructions TEXT,
+  status VARCHAR(20) NOT NULL,
+  prescribed_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
-## Security Features
+#### Diagnoses Table
+```sql
+CREATE TABLE diagnoses (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  patient_id UUID NOT NULL,
+  provider_id UUID NOT NULL,
+  diagnosis_code VARCHAR(20) NOT NULL,
+  diagnosis_name VARCHAR(200) NOT NULL,
+  description TEXT,
+  status VARCHAR(20) NOT NULL,
+  diagnosed_at TIMESTAMP NOT NULL,
+  resolved_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
-- **Field-level encryption** for sensitive PHI data
-- **Access control** based on user roles and patient relationships
-- **Audit logging** for all data access and modifications
-- **HIPAA compliance** with proper data handling
-- **Drug interaction checking** for prescription safety
-- **Controlled substance monitoring** and reporting
+## Monitoring & Health Checks
 
-## API Testing
+### Health Endpoint
+- **URL**: `GET /clinical/health`
+- **Response**: Service status, database connectivity, Redis status, Kafka connectivity
+- **Monitoring**: Prometheus metrics available at `/metrics`
 
-### Postman Collection
-Import the comprehensive API collection to test all endpoints:
-- **Collection**: [Kiorex Healthcare Platform API Collection](https://www.postman.com/kiorex-healthcare/workspace/kiorex-healthcare-platform/collection/kiorex-healthcare-api-collection)
-- **Environment**: Use the provided environment variables for easy testing
-- **Pre-configured**: All requests are pre-filled with sample data
+### Key Metrics
+- Clinical record creation and update rates
+- Vital signs monitoring frequency
+- Prescription processing times
+- Diagnosis accuracy and coding
+- Clinical outcome measures
 
-### Quick Start
-1. Import the Postman collection
-2. Set up environment variables (baseUrl, authToken, etc.)
-3. Run the "Login" request to get authentication token
-4. Test other endpoints with the authenticated token
+### Logging
+- Clinical record access and modifications
+- Vital signs recording and monitoring
+- Prescription generation and management
+- Diagnosis and treatment activities
+- Clinical decision support events
+
+## Security Considerations
+
+### Data Protection
+- **HIPAA Compliance**: Protected health information (PHI) security
+- **Access Control**: Role-based access to clinical data
+- **Audit Logging**: Complete clinical audit trails
+- **Data Encryption**: Encrypted storage of sensitive clinical data
+- **Secure Transmission**: TLS encryption for all communications
+
+### Clinical Data Security
+- **PHI Protection**: Secure handling of protected health information
+- **Access Logging**: Complete access logging for clinical data
+- **Data Integrity**: Clinical data integrity and validation
+- **Backup Security**: Secure backup and recovery of clinical data
+- **Compliance Monitoring**: Real-time compliance monitoring
+
+### API Security
+- **Authentication**: JWT token validation for all endpoints
+- **Authorization**: Role-based endpoint access control
+- **Rate Limiting**: API rate limiting to prevent abuse
+- **Input Validation**: Comprehensive input sanitization
+- **CORS Configuration**: Proper CORS configuration for web clients
+
+## Future Enhancement Opportunities
+
+### Advanced Clinical Features
+- **AI-Powered Diagnostics**: Machine learning for diagnostic support
+- **Clinical Decision Support**: Advanced clinical decision support systems
+- **Predictive Analytics**: Predictive analytics for patient outcomes
+- **Risk Stratification**: Advanced patient risk stratification
+- **Clinical Pathways**: Automated clinical pathway management
+
+### Interoperability Enhancements
+- **FHIR Integration**: Advanced FHIR R4/R5 compliance
+- **HL7 Integration**: HL7 message processing and integration
+- **EHR Integration**: Enhanced EHR system integration
+- **API Standardization**: Standardized clinical APIs
+- **Data Exchange**: Secure clinical data exchange
+
+### Clinical Workflow Improvements
+- **Workflow Automation**: Automated clinical workflows
+- **Care Coordination**: Enhanced care coordination tools
+- **Clinical Protocols**: Standardized clinical protocols
+- **Quality Measures**: Automated quality measure reporting
+- **Outcome Tracking**: Advanced outcome tracking and analytics
+
+### Patient Engagement
+- **Patient Portal**: Enhanced patient portal for clinical data
+- **Mobile Health**: Mobile health integration and monitoring
+- **Telehealth**: Advanced telehealth capabilities
+- **Patient Education**: Patient education and engagement tools
+- **Self-Management**: Patient self-management tools
+
+### Analytics & Reporting
+- **Clinical Analytics**: Advanced clinical analytics and reporting
+- **Population Health**: Population health management tools
+- **Quality Reporting**: Automated quality reporting
+- **Research Support**: Clinical research support tools
+- **Benchmarking**: Clinical benchmarking and comparison
+
+### Integration Capabilities
+- **Laboratory Integration**: Laboratory system integration
+- **Imaging Integration**: Medical imaging system integration
+- **Pharmacy Integration**: Pharmacy system integration
+- **Billing Integration**: Billing and coding integration
+- **External Systems**: Integration with external healthcare systems
+
+## Dependencies
+
+### Core Dependencies
+- `@nestjs/core` - NestJS framework
+- `@nestjs/common` - Common NestJS utilities
+- `@nestjs/typeorm` - TypeORM integration
+- `@nestjs/jwt` - JWT token handling
+- `@nestjs/passport` - Passport.js integration
+- `passport-jwt` - JWT strategy for Passport
+- `class-validator` - DTO validation
+- `class-transformer` - Object transformation
+
+### Clinical Dependencies
+- `fhir-kit-client` - FHIR client for interoperability
+- `moment` - Date and time manipulation
+- `lodash` - Utility functions for data manipulation
+
+### Database Dependencies
+- `typeorm` - ORM for database operations
+- `pg` - PostgreSQL driver
+- `redis` - Redis client for caching
+
+### Message Queue Dependencies
+- `kafkajs` - Kafka client for event streaming
+- `@nestjs/microservices` - Microservice communication
+
+### Development Dependencies
+- `@nestjs/testing` - Testing utilities
+- `jest` - Testing framework
+- `supertest` - HTTP testing
+- `@types/lodash` - TypeScript types
+
+## Contact & Support
+
+- **Service Owner**: Clinical Team
+- **Documentation**: [Clinical Service Docs](./docs/)
+- **API Documentation**: Available via Swagger at `/api/docs`
+- **Monitoring**: Grafana dashboards available
+- **Support**: Contact DevOps team for issues
+
+---
+
+*This service is part of the Kiorex Healthcare Platform microservices architecture.*
