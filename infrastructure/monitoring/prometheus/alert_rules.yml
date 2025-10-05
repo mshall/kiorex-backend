@@ -1,0 +1,191 @@
+groups:
+  - name: healthcare-platform-alerts
+    rules:
+      # Service Availability Alerts
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "Service {{ $labels.job }} has been down for more than 1 minute."
+
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate for {{ $labels.job }}"
+          description: "Error rate is {{ $value }} errors per second for service {{ $labels.job }}"
+
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time for {{ $labels.job }}"
+          description: "95th percentile response time is {{ $value }}s for service {{ $labels.job }}"
+
+      # Database Alerts
+      - alert: DatabaseConnectionHigh
+        expr: pg_stat_database_numbackends / pg_settings_max_connections * 100 > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High database connection usage"
+          description: "Database connection usage is {{ $value }}%"
+
+      - alert: DatabaseDown
+        expr: pg_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "PostgreSQL database has been down for more than 1 minute"
+
+      # Redis Alerts
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis is down"
+          description: "Redis has been down for more than 1 minute"
+
+      - alert: RedisMemoryHigh
+        expr: redis_memory_used_bytes / redis_memory_max_bytes * 100 > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Redis memory usage"
+          description: "Redis memory usage is {{ $value }}%"
+
+      # Elasticsearch Alerts
+      - alert: ElasticsearchDown
+        expr: elasticsearch_cluster_health_status != 1
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Elasticsearch cluster is unhealthy"
+          description: "Elasticsearch cluster health status is {{ $value }}"
+
+      # Kafka Alerts
+      - alert: KafkaDown
+        expr: kafka_server_kafkaserver_kafkaserverstate == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Kafka is down"
+          description: "Kafka server is down"
+
+      # Healthcare Specific Alerts
+      - alert: HighAppointmentLoad
+        expr: appointment_service_appointments_total > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High appointment load"
+          description: "Appointment service has {{ $value }} appointments"
+
+      - alert: PaymentProcessingErrors
+        expr: rate(payment_service_payment_errors_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High payment processing error rate"
+          description: "Payment error rate is {{ $value }} errors per second"
+
+      - alert: ClinicalDataAccessAnomaly
+        expr: rate(clinical_service_data_access_total[5m]) > 100
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Unusual clinical data access pattern"
+          description: "Clinical data access rate is {{ $value }} accesses per second"
+
+      - alert: DocumentUploadFailures
+        expr: rate(document_service_upload_failures_total[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High document upload failure rate"
+          description: "Document upload failure rate is {{ $value }} failures per second"
+
+      # System Resource Alerts
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: DiskSpaceLow
+        expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Low disk space on {{ $labels.instance }}"
+          description: "Disk usage is {{ $value }}% on {{ $labels.instance }}"
+
+      # Security Alerts
+      - alert: HighFailedLoginAttempts
+        expr: rate(auth_service_failed_logins_total[5m]) > 10
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High failed login attempts"
+          description: "Failed login rate is {{ $value }} attempts per second"
+
+      - alert: UnauthorizedAccessAttempts
+        expr: rate(api_gateway_unauthorized_requests_total[5m]) > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High unauthorized access attempts"
+          description: "Unauthorized access rate is {{ $value }} attempts per second"
+
+      # Compliance Alerts
+      - alert: DataRetentionViolation
+        expr: document_service_retention_violations_total > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Data retention policy violation"
+          description: "{{ $value }} documents violate retention policy"
+
+      - alert: AuditLogFailure
+        expr: rate(audit_service_log_failures_total[5m]) > 0.01
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Audit logging failures"
+          description: "Audit log failure rate is {{ $value }} failures per second"

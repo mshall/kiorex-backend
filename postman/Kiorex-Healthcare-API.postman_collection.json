@@ -932,6 +932,679 @@
       ]
     },
     {
+      "name": "🧪 Lab Service",
+      "item": [
+        {
+          "name": "Get Lab Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lab-orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["lab-orders"]
+            },
+            "description": "Get all lab orders"
+          }
+        },
+        {
+          "name": "Create Lab Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"testType\": \"blood_test\",\n  \"priority\": \"routine\",\n  \"notes\": \"Routine blood work\",\n  \"requestedBy\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/lab-orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["lab-orders"]
+            },
+            "description": "Create new lab order"
+          }
+        },
+        {
+          "name": "Get Lab Results",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lab-results",
+              "host": ["{{baseUrl}}"],
+              "path": ["lab-results"]
+            },
+            "description": "Get all lab results"
+          }
+        },
+        {
+          "name": "Create Lab Result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"labOrderId\": \"{{labOrderId}}\",\n  \"testResults\": {\n    \"hemoglobin\": \"14.2 g/dL\",\n    \"hematocrit\": \"42.1%\",\n    \"whiteBloodCells\": \"7.2 K/uL\"\n  },\n  \"status\": \"completed\",\n  \"interpretation\": \"All values within normal limits\",\n  \"technicianId\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/lab-results",
+              "host": ["{{baseUrl}}"],
+              "path": ["lab-results"]
+            },
+            "description": "Create lab result"
+          }
+        }
+      ]
+    },
+    {
+      "name": "💊 Pharmacy Service",
+      "item": [
+        {
+          "name": "Get Medications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/medications",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications"]
+            },
+            "description": "Get all medications"
+          }
+        },
+        {
+          "name": "Create Medication",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lisinopril\",\n  \"genericName\": \"Lisinopril\",\n  \"dosageForm\": \"tablet\",\n  \"strength\": \"10mg\",\n  \"manufacturer\": \"Generic Pharma\",\n  \"description\": \"ACE inhibitor for hypertension\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/medications",
+              "host": ["{{baseUrl}}"],
+              "path": ["medications"]
+            },
+            "description": "Create new medication"
+          }
+        },
+        {
+          "name": "Get Prescriptions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions"]
+            },
+            "description": "Get all prescriptions"
+          }
+        },
+        {
+          "name": "Create Prescription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"medicationId\": \"{{medicationId}}\",\n  \"dosage\": \"10mg\",\n  \"frequency\": \"once daily\",\n  \"duration\": \"30 days\",\n  \"instructions\": \"Take with food\",\n  \"prescribedBy\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/prescriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["prescriptions"]
+            },
+            "description": "Create new prescription"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏥 Surgery Service",
+      "item": [
+        {
+          "name": "Get Surgeries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/surgeries",
+              "host": ["{{baseUrl}}"],
+              "path": ["surgeries"]
+            },
+            "description": "Get all surgeries"
+          }
+        },
+        {
+          "name": "Create Surgery",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"surgeonId\": \"{{userId}}\",\n  \"procedureName\": \"Appendectomy\",\n  \"type\": \"emergency\",\n  \"category\": \"general\",\n  \"scheduledDate\": \"2024-01-20T14:00:00Z\",\n  \"estimatedDuration\": 60,\n  \"operatingRoom\": \"OR-1\",\n  \"description\": \"Laparoscopic appendectomy\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/surgeries",
+              "host": ["{{baseUrl}}"],
+              "path": ["surgeries"]
+            },
+            "description": "Create new surgery"
+          }
+        },
+        {
+          "name": "Get Surgery Teams",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/surgery-teams",
+              "host": ["{{baseUrl}}"],
+              "path": ["surgery-teams"]
+            },
+            "description": "Get surgery teams"
+          }
+        },
+        {
+          "name": "Get Surgery Rooms",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/surgery-rooms",
+              "host": ["{{baseUrl}}"],
+              "path": ["surgery-rooms"]
+            },
+            "description": "Get surgery rooms"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👩‍⚕️ Nurse Service",
+      "item": [
+        {
+          "name": "Get Nurse Shifts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/nurse-shifts",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse-shifts"]
+            },
+            "description": "Get all nurse shifts"
+          }
+        },
+        {
+          "name": "Create Nurse Shift",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nurseId\": \"{{userId}}\",\n  \"nurseName\": \"Jane Smith\",\n  \"shiftDate\": \"2024-01-20\",\n  \"type\": \"day\",\n  \"startTime\": \"07:00:00\",\n  \"endTime\": \"19:00:00\",\n  \"unit\": \"ICU\",\n  \"floor\": \"3\",\n  \"ward\": \"A\",\n  \"patientCount\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/nurse-shifts",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse-shifts"]
+            },
+            "description": "Create new nurse shift"
+          }
+        },
+        {
+          "name": "Get Patient Care",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/patient-care",
+              "host": ["{{baseUrl}}"],
+              "path": ["patient-care"]
+            },
+            "description": "Get patient care records"
+          }
+        },
+        {
+          "name": "Create Patient Care",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"nurseId\": \"{{userId}}\",\n  \"nurseName\": \"Jane Smith\",\n  \"careType\": \"medication\",\n  \"priority\": \"high\",\n  \"scheduledTime\": \"2024-01-20T08:00:00Z\",\n  \"description\": \"Administer morning medications\",\n  \"instructions\": \"Give patient morning medications as prescribed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/patient-care",
+              "host": ["{{baseUrl}}"],
+              "path": ["patient-care"]
+            },
+            "description": "Create patient care record"
+          }
+        },
+        {
+          "name": "Get Nurse Notes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/nurse-notes",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse-notes"]
+            },
+            "description": "Get nurse notes"
+          }
+        },
+        {
+          "name": "Create Nurse Notes",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"nurseId\": \"{{userId}}\",\n  \"nurseName\": \"Jane Smith\",\n  \"noteType\": \"assessment\",\n  \"priority\": \"medium\",\n  \"content\": \"Patient appears stable. Vital signs within normal limits.\",\n  \"summary\": \"Stable patient assessment\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/nurse-notes",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse-notes"]
+            },
+            "description": "Create nurse notes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📄 Document Service",
+      "item": [
+        {
+          "name": "Get Documents",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"]
+            },
+            "description": "Get all documents"
+          }
+        },
+        {
+          "name": "Create Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Patient Medical Record\",\n  \"description\": \"Complete medical record for patient\",\n  \"documentType\": \"medical_record\",\n  \"category\": \"patient_records\",\n  \"patientId\": \"{{patientId}}\",\n  \"createdBy\": \"{{userId}}\",\n  \"isConfidential\": true,\n  \"accessLevel\": \"confidential\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"]
+            },
+            "description": "Create new document"
+          }
+        },
+        {
+          "name": "Upload Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "documentId",
+                  "value": "{{documentId}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "upload"]
+            },
+            "description": "Upload document file"
+          }
+        },
+        {
+          "name": "Download Document",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/download",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "download"]
+            },
+            "description": "Download document"
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚙️ Admin Service",
+      "item": [
+        {
+          "name": "Get Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            },
+            "description": "Get all users"
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@healthcare.com\",\n  \"username\": \"newuser\",\n  \"password\": \"NewUser@123456\",\n  \"firstName\": \"New\",\n  \"lastName\": \"User\",\n  \"phone\": \"+1234567890\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            },
+            "description": "Create new user"
+          }
+        },
+        {
+          "name": "Get Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles"]
+            },
+            "description": "Get all roles"
+          }
+        },
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"nurse\",\n  \"description\": \"Nursing staff with patient care access\",\n  \"permissions\": [\n    \"patients.read\",\n    \"medical_records.read\",\n    \"appointments.read\",\n    \"nurse_notes.create\"\n  ],\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles"]
+            },
+            "description": "Create new role"
+          }
+        },
+        {
+          "name": "Get Permissions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/permissions",
+              "host": ["{{baseUrl}}"],
+              "path": ["permissions"]
+            },
+            "description": "Get all permissions"
+          }
+        },
+        {
+          "name": "Get System Configurations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/configurations",
+              "host": ["{{baseUrl}}"],
+              "path": ["configurations"]
+            },
+            "description": "Get system configurations"
+          }
+        },
+        {
+          "name": "Get Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/audit-logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["audit-logs"]
+            },
+            "description": "Get audit logs"
+          }
+        },
+        {
+          "name": "Get Platform Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/platform",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "platform"]
+            },
+            "description": "Get platform analytics"
+          }
+        }
+      ]
+    },
+    {
       "name": "🏥 Health Checks",
       "item": [
         {

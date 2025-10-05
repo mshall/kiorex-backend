@@ -26,6 +26,7 @@ import { MedicalRecordController } from './controllers/medical-record.controller
 import { PrescriptionController } from './controllers/prescription.controller';
 import { LabResultController } from './controllers/lab-result.controller';
 import { ClinicalNoteController } from './controllers/clinical-note.controller';
+import { VitalsController } from './controllers/vitals.controller';
 
 // Services  
 import { MedicalRecordService } from './services/medical-record.service';
@@ -108,6 +109,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     PrescriptionController,
     LabResultController,
     ClinicalNoteController,
+    VitalsController,
   ],
   providers: [
     MedicalRecordService,

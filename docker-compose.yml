@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
-      POSTGRES_MULTIPLE_DATABASES: auth_db,users_db,appointments_db,payments_db,clinical_db,notifications_db,search_db,video_db,analytics_db
+      POSTGRES_MULTIPLE_DATABASES: auth_db,users_db,appointments_db,payments_db,clinical_db,notifications_db,search_db,video_db,analytics_db,lab_db,pharmacy_db,surgery_db,nurse_db,document_db,admin_db
     ports:
       - "5432:5432"
     volumes:
@@ -366,6 +366,191 @@ services:
     networks:
       - healthcare-network
 
+  # Lab Service
+  lab-service:
+    build:
+      context: ./services/lab-service
+      dockerfile: Dockerfile
+    container_name: healthcare-lab-service
+    environment:
+      NODE_ENV: development
+      PORT: 3011
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_DATABASE: lab_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis123
+      KAFKA_BROKERS: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+    ports:
+      - "3011:3011"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    networks:
+      - healthcare-network
+
+  # Pharmacy Service
+  pharmacy-service:
+    build:
+      context: ./services/pharmacy-service
+      dockerfile: Dockerfile
+    container_name: healthcare-pharmacy-service
+    environment:
+      NODE_ENV: development
+      PORT: 3012
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_DATABASE: pharmacy_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis123
+      KAFKA_BROKERS: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+    ports:
+      - "3012:3012"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    networks:
+      - healthcare-network
+
+  # Surgery Service
+  surgery-service:
+    build:
+      context: ./services/surgery-service
+      dockerfile: Dockerfile
+    container_name: healthcare-surgery-service
+    environment:
+      NODE_ENV: development
+      PORT: 3013
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_DATABASE: surgery_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis123
+      KAFKA_BROKERS: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+    ports:
+      - "3013:3013"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    networks:
+      - healthcare-network
+
+  # Nurse Service
+  nurse-service:
+    build:
+      context: ./services/nurse-service
+      dockerfile: Dockerfile
+    container_name: healthcare-nurse-service
+    environment:
+      NODE_ENV: development
+      PORT: 3014
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_DATABASE: nurse_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis123
+      KAFKA_BROKERS: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+    ports:
+      - "3014:3014"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    networks:
+      - healthcare-network
+
+  # Document Service
+  document-service:
+    build:
+      context: ./services/document-service
+      dockerfile: Dockerfile
+    container_name: healthcare-document-service
+    environment:
+      NODE_ENV: development
+      PORT: 3015
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_DATABASE: document_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis123
+      KAFKA_BROKERS: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+      UPLOAD_PATH: /app/uploads
+      MAX_FILE_SIZE: 10485760
+      ALLOWED_FILE_TYPES: pdf,doc,docx,jpg,jpeg,png,gif,txt
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: us-east-1
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+    ports:
+      - "3015:3015"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+      - minio
+    networks:
+      - healthcare-network
+
+  # Admin Service
+  admin-service:
+    build:
+      context: ./services/admin-service
+      dockerfile: Dockerfile
+    container_name: healthcare-admin-service
+    environment:
+      NODE_ENV: development
+      PORT: 3016
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_DATABASE: admin_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis123
+      KAFKA_BROKERS: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+      ADMIN_EMAIL: admin@kiorex.com
+      ADMIN_PASSWORD: admin123
+      DEFAULT_ROLE: admin
+    ports:
+      - "3016:3016"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    networks:
+      - healthcare-network
+
   # API Gateway
   api-gateway:
     build:
@@ -384,6 +569,12 @@ services:
       SEARCH_SERVICE_URL: http://search-service:3008
       VIDEO_SERVICE_URL: http://video-service:3009
       ANALYTICS_SERVICE_URL: http://analytics-service:3010
+      LAB_SERVICE_URL: http://lab-service:3011
+      PHARMACY_SERVICE_URL: http://pharmacy-service:3012
+      SURGERY_SERVICE_URL: http://surgery-service:3013
+      NURSE_SERVICE_URL: http://nurse-service:3014
+      DOCUMENT_SERVICE_URL: http://document-service:3015
+      ADMIN_SERVICE_URL: http://admin-service:3016
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: redis123
@@ -403,6 +594,12 @@ services:
       - search-service
       - video-service
       - analytics-service
+      - lab-service
+      - pharmacy-service
+      - surgery-service
+      - nurse-service
+      - document-service
+      - admin-service
     networks:
       - healthcare-network
 

@@ -1,0 +1,30 @@
+import { PrescriptionPriority } from '../entities/prescription.entity';
+export declare class CreatePrescriptionDto {
+    patientId: string;
+    providerId: string;
+    appointmentId?: string;
+    medicationId?: string;
+    medicationName: string;
+    genericName?: string;
+    dosage: string;
+    frequency: string;
+    duration: string;
+    quantity?: number;
+    instructions?: string;
+    clinicalNotes?: string;
+    priority?: PrescriptionPriority;
+    prescribedBy?: string;
+    prescribedAt?: Date;
+    drugInteractions?: string[];
+    allergies?: string[];
+    contraindications?: string[];
+    totalCost?: number;
+    patientCost?: number;
+    insuranceCost?: number;
+    insuranceCoverage?: string;
+    priorAuthorization?: string;
+    sideEffects?: string[];
+    monitoring?: string[];
+    followUpDate?: Date;
+    followUpNotes?: string;
+}

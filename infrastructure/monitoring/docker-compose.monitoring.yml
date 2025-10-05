@@ -1,0 +1,275 @@
+version: '3.8'
+
+services:
+  # Prometheus - Metrics Collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: healthcare-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
+      - prometheus_data:/prometheus
+    networks:
+      - healthcare-network
+      - monitoring-network
+
+  # AlertManager - Alert Management
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: healthcare-alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=http://localhost:9093'
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager_data:/alertmanager
+    networks:
+      - healthcare-network
+      - monitoring-network
+
+  # Grafana - Visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: healthcare-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin123
+      GF_USERS_ALLOW_SIGN_UP: false
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-worldmap-panel
+    ports:
+      - "3030:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    networks:
+      - healthcare-network
+      - monitoring-network
+
+  # Jaeger - Distributed Tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: healthcare-jaeger
+    environment:
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14250:14250"
+      - "14268:14268"
+      - "14269:14269"
+      - "9411:9411"
+    networks:
+      - healthcare-network
+      - monitoring-network
+
+  # Node Exporter - System Metrics
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: healthcare-node-exporter
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - monitoring-network
+
+  # cAdvisor - Container Metrics
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: healthcare-cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - monitoring-network
+
+  # PostgreSQL Exporter
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: healthcare-postgres-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgres123@postgres:5432/postgres?sslmode=disable"
+    ports:
+      - "9187:9187"
+    depends_on:
+      - postgres
+    networks:
+      - healthcare-network
+      - monitoring-network
+
+  # Redis Exporter
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: healthcare-redis-exporter
+    environment:
+      REDIS_ADDR: "redis://redis:6379"
+      REDIS_PASSWORD: "redis123"
+    ports:
+      - "9121:9121"
+    depends_on:
+      - redis
+    networks:
+      - healthcare-network
+      - monitoring-network
+
+  # Elasticsearch Exporter
+  elasticsearch-exporter:
+    image: justwatch/elasticsearch_exporter:latest
+    container_name: healthcare-elasticsearch-exporter
+    command:
+      - '--es.uri=http://elasticsearch:9200'
+      - '--es.all'
+      - '--es.indices'
+      - '--es.shards'
+      - '--es.snapshots'
+    ports:
+      - "9114:9114"
+    depends_on:
+      - elasticsearch
+    networks:
+      - healthcare-network
+      - monitoring-network
+
+  # Kafka Exporter
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:latest
+    container_name: healthcare-kafka-exporter
+    command:
+      - '--kafka.server=kafka:9092'
+    ports:
+      - "9308:9308"
+    depends_on:
+      - kafka
+    networks:
+      - healthcare-network
+      - monitoring-network
+
+  # Webhook Receiver for Alerts
+  webhook-receiver:
+    image: python:3.9-alpine
+    container_name: healthcare-webhook-receiver
+    command: |
+      sh -c "
+        pip install flask requests &&
+        python -c '
+import json
+from flask import Flask, request
+import requests
+
+app = Flask(__name__)
+
+@app.route(\"/webhook\", methods=[\"POST\"])
+def webhook():
+    data = request.json
+    print(f\"Received alert: {json.dumps(data, indent=2)}\")
+    
+    # Send to external systems (PagerDuty, OpsGenie, etc.)
+    # requests.post(\"https://api.pagerduty.com/incidents\", json=data)
+    
+    return \"OK\", 200
+
+if __name__ == \"__main__\":
+    app.run(host=\"0.0.0.0\", port=5001)
+        '
+      "
+    ports:
+      - "5001:5001"
+    networks:
+      - monitoring-network
+
+  # Log Aggregation with ELK Stack
+  elasticsearch-logs:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    container_name: healthcare-elasticsearch-logs
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    ports:
+      - "9201:9200"
+    volumes:
+      - elasticsearch_logs_data:/usr/share/elasticsearch/data
+    networks:
+      - monitoring-network
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.10.2
+    container_name: healthcare-logstash
+    volumes:
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    depends_on:
+      - elasticsearch-logs
+    networks:
+      - monitoring-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.10.2
+    container_name: healthcare-kibana
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch-logs:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch-logs
+    networks:
+      - monitoring-network
+
+  # Uptime Monitoring
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: healthcare-uptime-kuma
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime_kuma_data:/app/data
+    networks:
+      - monitoring-network
+
+networks:
+  monitoring-network:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  alertmanager_data:
+  grafana_data:
+  elasticsearch_logs_data:
+  uptime_kuma_data:

@@ -1,0 +1,29 @@
+export declare class CreateMedicationDto {
+    name: string;
+    genericName: string;
+    category: string;
+    description?: string;
+    manufacturer?: string;
+    dosageForm?: string;
+    strength?: string;
+    activeIngredients?: string[];
+    sideEffects?: string[];
+    contraindications?: string[];
+    drugInteractions?: string[];
+    storageInstructions?: string[];
+    administrationInstructions?: string[];
+    isActive?: boolean;
+    requiresPrescription?: boolean;
+    unitPrice?: number;
+    unit?: string;
+    ndc?: string;
+    upc?: string;
+    barcode?: string;
+    stockQuantity?: number;
+    minimumStockLevel?: number;
+    maximumStockLevel?: number;
+    expiryDate?: Date;
+    batchNumber?: string;
+    supplier?: string;
+    images?: string[];
+}

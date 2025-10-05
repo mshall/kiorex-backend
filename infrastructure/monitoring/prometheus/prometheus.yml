@@ -1,0 +1,161 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alert_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # API Gateway
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['api-gateway:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Auth Service
+  - job_name: 'auth-service'
+    static_configs:
+      - targets: ['auth-service:3001']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # User Service
+  - job_name: 'user-service'
+    static_configs:
+      - targets: ['user-service:3002']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Payment Service
+  - job_name: 'payment-service'
+    static_configs:
+      - targets: ['payment-service:3004']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Appointment Service
+  - job_name: 'appointment-service'
+    static_configs:
+      - targets: ['appointment-service:3005']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Clinical Service
+  - job_name: 'clinical-service'
+    static_configs:
+      - targets: ['clinical-service:3006']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Notification Service
+  - job_name: 'notification-service'
+    static_configs:
+      - targets: ['notification-service:3007']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Search Service
+  - job_name: 'search-service'
+    static_configs:
+      - targets: ['search-service:3008']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Video Service
+  - job_name: 'video-service'
+    static_configs:
+      - targets: ['video-service:3009']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Analytics Service
+  - job_name: 'analytics-service'
+    static_configs:
+      - targets: ['analytics-service:3010']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Lab Service
+  - job_name: 'lab-service'
+    static_configs:
+      - targets: ['lab-service:3011']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Pharmacy Service
+  - job_name: 'pharmacy-service'
+    static_configs:
+      - targets: ['pharmacy-service:3012']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Surgery Service
+  - job_name: 'surgery-service'
+    static_configs:
+      - targets: ['surgery-service:3013']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Nurse Service
+  - job_name: 'nurse-service'
+    static_configs:
+      - targets: ['nurse-service:3014']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Document Service
+  - job_name: 'document-service'
+    static_configs:
+      - targets: ['document-service:3015']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Admin Service
+  - job_name: 'admin-service'
+    static_configs:
+      - targets: ['admin-service:3016']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # PostgreSQL
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    scrape_interval: 30s
+
+  # Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+
+  # Elasticsearch
+  - job_name: 'elasticsearch'
+    static_configs:
+      - targets: ['elasticsearch:9200']
+    metrics_path: '/_prometheus/metrics'
+    scrape_interval: 30s
+
+  # Kafka
+  - job_name: 'kafka'
+    static_configs:
+      - targets: ['kafka:9092']
+    scrape_interval: 30s
+
+  # Node Exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
