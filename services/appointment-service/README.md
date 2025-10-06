@@ -39,50 +39,64 @@ The Appointment Service is a comprehensive scheduling and appointment management
 ## API Endpoints
 
 ### Appointment Management
-- `GET /appointments` - Get all appointments (with filtering and pagination)
-- `GET /appointments/:id` - Get specific appointment details
-- `POST /appointments` - Create new appointment
-- `PUT /appointments/:id` - Update appointment
-- `DELETE /appointments/:id` - Cancel appointment
-- `POST /appointments/:id/reschedule` - Reschedule appointment
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/appointments` | Get all appointments (with filtering and pagination) | JWT Required |
+| `GET` | `/appointments/:id` | Get specific appointment details | JWT Required |
+| `POST` | `/appointments` | Create new appointment | JWT Required |
+| `PUT` | `/appointments/:id` | Update appointment | JWT Required |
+| `DELETE` | `/appointments/:id` | Cancel appointment | JWT Required |
+| `POST` | `/appointments/:id/reschedule` | Reschedule appointment | JWT Required |
 
 ### Provider Scheduling
-- `GET /providers/:id/availability` - Get provider availability
-- `POST /providers/:id/availability` - Set provider availability
-- `GET /providers/:id/schedule` - Get provider schedule
-- `POST /providers/:id/block-time` - Block time slots
-- `DELETE /providers/:id/block-time/:blockId` - Remove blocked time
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/providers/:id/availability` | Get provider availability | JWT Required |
+| `POST` | `/providers/:id/availability` | Set provider availability | JWT Required |
+| `GET` | `/providers/:id/schedule` | Get provider schedule | JWT Required |
+| `POST` | `/providers/:id/block-time` | Block time slots | JWT Required |
+| `DELETE` | `/providers/:id/block-time/:blockId` | Remove blocked time | JWT Required |
 
 ### Patient Booking
-- `GET /appointments/available` - Get available appointment slots
-- `POST /appointments/book` - Book new appointment
-- `GET /appointments/patient/:patientId` - Get patient appointments
-- `POST /appointments/:id/check-in` - Patient check-in
-- `POST /appointments/:id/complete` - Mark appointment as completed
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/appointments/available` | Get available appointment slots | JWT Required |
+| `POST` | `/appointments/book` | Book new appointment | JWT Required |
+| `GET` | `/appointments/patient/:patientId` | Get patient appointments | JWT Required |
+| `POST` | `/appointments/:id/check-in` | Patient check-in | JWT Required |
+| `POST` | `/appointments/:id/complete` | Mark appointment as completed | JWT Required |
 
 ### Calendar Management
-- `GET /calendars` - Get all calendars
-- `GET /calendars/:id` - Get specific calendar
-- `POST /calendars` - Create new calendar
-- `PUT /calendars/:id` - Update calendar settings
-- `GET /calendars/:id/events` - Get calendar events
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/calendars` | Get all calendars | JWT Required |
+| `GET` | `/calendars/:id` | Get specific calendar | JWT Required |
+| `POST` | `/calendars` | Create new calendar | JWT Required |
+| `PUT` | `/calendars/:id` | Update calendar settings | JWT Required |
+| `GET` | `/calendars/:id/events` | Get calendar events | JWT Required |
 
 ### Reminders & Notifications
-- `GET /reminders` - Get all reminders
-- `POST /reminders` - Create new reminder
-- `PUT /reminders/:id` - Update reminder
-- `DELETE /reminders/:id` - Delete reminder
-- `POST /reminders/send` - Send appointment reminders
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/reminders` | Get all reminders | JWT Required |
+| `POST` | `/reminders` | Create new reminder | JWT Required |
+| `PUT` | `/reminders/:id` | Update reminder | JWT Required |
+| `DELETE` | `/reminders/:id` | Delete reminder | JWT Required |
+| `POST` | `/reminders/send` | Send appointment reminders | JWT Required |
 
 ### Reporting & Analytics
-- `GET /reports/appointments` - Appointment reports
-- `GET /reports/provider-utilization` - Provider utilization reports
-- `GET /reports/patient-satisfaction` - Patient satisfaction reports
-- `GET /reports/no-shows` - No-show reports and analytics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/reports/appointments` | Appointment reports | JWT Required |
+| `GET` | `/reports/provider-utilization` | Provider utilization reports | JWT Required |
+| `GET` | `/reports/patient-satisfaction` | Patient satisfaction reports | JWT Required |
+| `GET` | `/reports/no-shows` | No-show reports and analytics | JWT Required |
 
 ### Health & Monitoring
-- `GET /appointments/health` - Service health check
-- `GET /appointments/metrics` - Appointment service metrics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/appointments/health` | Service health check | None |
+| `GET` | `/appointments/metrics` | Appointment service metrics | JWT Required |
 
 ## Installation & Setup Guide
 

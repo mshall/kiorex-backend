@@ -37,63 +37,81 @@ The Notification Service is a comprehensive multi-channel communication microser
 ## API Endpoints
 
 ### Notification Management
-- `GET /notifications` - Get all notifications (with filtering and pagination)
-- `GET /notifications/:id` - Get specific notification details
-- `POST /notifications` - Create new notification
-- `PUT /notifications/:id` - Update notification
-- `DELETE /notifications/:id` - Delete notification
-- `POST /notifications/:id/send` - Send notification immediately
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/notifications` | Get all notifications (with filtering and pagination) | JWT Required |
+| `GET` | `/notifications/:id` | Get specific notification details | JWT Required |
+| `POST` | `/notifications` | Create new notification | JWT Required |
+| `PUT` | `/notifications/:id` | Update notification | JWT Required |
+| `DELETE` | `/notifications/:id` | Delete notification | JWT Required |
+| `POST` | `/notifications/:id/send` | Send notification immediately | JWT Required |
 
 ### Email Notifications
-- `POST /notifications/email` - Send email notification
-- `GET /notifications/email/templates` - Get email templates
-- `POST /notifications/email/templates` - Create email template
-- `PUT /notifications/email/templates/:id` - Update email template
-- `GET /notifications/email/status/:id` - Get email delivery status
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `POST` | `/notifications/email` | Send email notification | JWT Required |
+| `GET` | `/notifications/email/templates` | Get email templates | JWT Required |
+| `POST` | `/notifications/email/templates` | Create email template | JWT Required |
+| `PUT` | `/notifications/email/templates/:id` | Update email template | JWT Required |
+| `GET` | `/notifications/email/status/:id` | Get email delivery status | JWT Required |
 
 ### SMS Notifications
-- `POST /notifications/sms` - Send SMS notification
-- `GET /notifications/sms/templates` - Get SMS templates
-- `POST /notifications/sms/templates` - Create SMS template
-- `PUT /notifications/sms/templates/:id` - Update SMS template
-- `GET /notifications/sms/status/:id` - Get SMS delivery status
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `POST` | `/notifications/sms` | Send SMS notification | JWT Required |
+| `GET` | `/notifications/sms/templates` | Get SMS templates | JWT Required |
+| `POST` | `/notifications/sms/templates` | Create SMS template | JWT Required |
+| `PUT` | `/notifications/sms/templates/:id` | Update SMS template | JWT Required |
+| `GET` | `/notifications/sms/status/:id` | Get SMS delivery status | JWT Required |
 
 ### Push Notifications
-- `POST /notifications/push` - Send push notification
-- `GET /notifications/push/templates` - Get push notification templates
-- `POST /notifications/push/templates` - Create push notification template
-- `PUT /notifications/push/templates/:id` - Update push notification template
-- `GET /notifications/push/status/:id` - Get push notification delivery status
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `POST` | `/notifications/push` | Send push notification | JWT Required |
+| `GET` | `/notifications/push/templates` | Get push notification templates | JWT Required |
+| `POST` | `/notifications/push/templates` | Create push notification template | JWT Required |
+| `PUT` | `/notifications/push/templates/:id` | Update push notification template | JWT Required |
+| `GET` | `/notifications/push/status/:id` | Get push notification delivery status | JWT Required |
 
 ### In-App Notifications
-- `GET /notifications/in-app` - Get in-app notifications
-- `POST /notifications/in-app` - Create in-app notification
-- `PUT /notifications/in-app/:id/read` - Mark notification as read
-- `DELETE /notifications/in-app/:id` - Delete in-app notification
-- `GET /notifications/in-app/unread` - Get unread notifications
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/notifications/in-app` | Get in-app notifications | JWT Required |
+| `POST` | `/notifications/in-app` | Create in-app notification | JWT Required |
+| `PUT` | `/notifications/in-app/:id/read` | Mark notification as read | JWT Required |
+| `DELETE` | `/notifications/in-app/:id` | Delete in-app notification | JWT Required |
+| `GET` | `/notifications/in-app/unread` | Get unread notifications | JWT Required |
 
 ### User Preferences
-- `GET /notifications/preferences/:userId` - Get user notification preferences
-- `PUT /notifications/preferences/:userId` - Update user notification preferences
-- `POST /notifications/preferences/:userId/opt-out` - Opt out of notifications
-- `POST /notifications/preferences/:userId/opt-in` - Opt in to notifications
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/notifications/preferences/:userId` | Get user notification preferences | JWT Required |
+| `PUT` | `/notifications/preferences/:userId` | Update user notification preferences | JWT Required |
+| `POST` | `/notifications/preferences/:userId/opt-out` | Opt out of notifications | JWT Required |
+| `POST` | `/notifications/preferences/:userId/opt-in` | Opt in to notifications | JWT Required |
 
 ### Templates & Campaigns
-- `GET /notifications/templates` - Get all notification templates
-- `POST /notifications/templates` - Create notification template
-- `PUT /notifications/templates/:id` - Update notification template
-- `DELETE /notifications/templates/:id` - Delete notification template
-- `POST /notifications/campaigns` - Create notification campaign
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/notifications/templates` | Get all notification templates | JWT Required |
+| `POST` | `/notifications/templates` | Create notification template | JWT Required |
+| `PUT` | `/notifications/templates/:id` | Update notification template | JWT Required |
+| `DELETE` | `/notifications/templates/:id` | Delete notification template | JWT Required |
+| `POST` | `/notifications/campaigns` | Create notification campaign | JWT Required |
 
 ### Analytics & Reporting
-- `GET /notifications/analytics` - Get notification analytics
-- `GET /notifications/reports/delivery` - Get delivery reports
-- `GET /notifications/reports/engagement` - Get engagement reports
-- `GET /notifications/reports/export` - Export notification data
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/notifications/analytics` | Get notification analytics | JWT Required |
+| `GET` | `/notifications/reports/delivery` | Get delivery reports | JWT Required |
+| `GET` | `/notifications/reports/engagement` | Get engagement reports | JWT Required |
+| `GET` | `/notifications/reports/export` | Export notification data | JWT Required |
 
 ### Health & Monitoring
-- `GET /notifications/health` - Service health check
-- `GET /notifications/metrics` - Notification service metrics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/notifications/health` | Service health check | None |
+| `GET` | `/notifications/metrics` | Notification service metrics | JWT Required |
 
 ## Installation & Setup Guide
 

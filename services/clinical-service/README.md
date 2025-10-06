@@ -43,58 +43,80 @@ The Clinical Service is a comprehensive medical records and clinical data manage
 
 ## API Endpoints
 
-### Patient Records
-- `GET /patients/:id/records` - Get patient medical records
-- `POST /patients/:id/records` - Create new medical record
-- `PUT /patients/:id/records/:recordId` - Update medical record
-- `DELETE /patients/:id/records/:recordId` - Delete medical record
-- `GET /patients/:id/history` - Get patient medical history
+### Patient Records Management
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/patients` | Get all patients | JWT Required |
+| `GET` | `/patients/:id` | Get patient by ID | JWT Required |
+| `POST` | `/patients` | Create new patient | JWT Required |
+| `PUT` | `/patients/:id` | Update patient | JWT Required |
+| `DELETE` | `/patients/:id` | Delete patient | JWT Required |
+| `GET` | `/patients/search` | Search patients | JWT Required |
+| `GET` | `/patients/:id/records` | Get patient medical records | JWT Required |
+| `POST` | `/patients/:id/records` | Create new medical record | JWT Required |
+| `PUT` | `/patients/:id/records/:recordId` | Update medical record | JWT Required |
+| `DELETE` | `/patients/:id/records/:recordId` | Delete medical record | JWT Required |
+| `GET` | `/patients/:id/history` | Get patient medical history | JWT Required |
 
-### Vital Signs
-- `GET /patients/:id/vitals` - Get patient vital signs
-- `POST /patients/:id/vitals` - Record new vital signs
-- `PUT /patients/:id/vitals/:vitalId` - Update vital signs
-- `GET /patients/:id/vitals/history` - Get vital signs history
-- `POST /patients/:id/vitals/bulk` - Bulk vital signs entry
+### Vital Signs Management
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/patients/:id/vitals` | Get patient vital signs | JWT Required |
+| `POST` | `/patients/:id/vitals` | Record new vital signs | JWT Required |
+| `PUT` | `/patients/:id/vitals/:vitalId` | Update vital signs | JWT Required |
+| `GET` | `/patients/:id/vitals/history` | Get vital signs history | JWT Required |
+| `POST` | `/patients/:id/vitals/bulk` | Bulk vital signs entry | JWT Required |
 
-### Clinical Notes
-- `GET /patients/:id/notes` - Get patient clinical notes
-- `POST /patients/:id/notes` - Create clinical note
-- `PUT /patients/:id/notes/:noteId` - Update clinical note
-- `GET /providers/:id/notes` - Get provider clinical notes
-- `POST /notes/:id/sign` - Sign clinical note
+### Clinical Notes Management
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/patients/:id/notes` | Get patient clinical notes | JWT Required |
+| `POST` | `/patients/:id/notes` | Create clinical note | JWT Required |
+| `PUT` | `/patients/:id/notes/:noteId` | Update clinical note | JWT Required |
+| `GET` | `/providers/:id/notes` | Get provider clinical notes | JWT Required |
+| `POST` | `/notes/:id/sign` | Sign clinical note | JWT Required |
 
-### Prescriptions
-- `GET /patients/:id/prescriptions` - Get patient prescriptions
-- `POST /patients/:id/prescriptions` - Create new prescription
-- `PUT /prescriptions/:id` - Update prescription
-- `POST /prescriptions/:id/refill` - Request prescription refill
-- `GET /prescriptions/:id/interactions` - Check drug interactions
+### Prescription Management
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/patients/:id/prescriptions` | Get patient prescriptions | JWT Required |
+| `POST` | `/patients/:id/prescriptions` | Create new prescription | JWT Required |
+| `PUT` | `/prescriptions/:id` | Update prescription | JWT Required |
+| `POST` | `/prescriptions/:id/refill` | Request prescription refill | JWT Required |
+| `GET` | `/prescriptions/:id/interactions` | Check drug interactions | JWT Required |
 
-### Diagnoses
-- `GET /patients/:id/diagnoses` - Get patient diagnoses
-- `POST /patients/:id/diagnoses` - Add new diagnosis
-- `PUT /diagnoses/:id` - Update diagnosis
-- `GET /diagnoses/codes` - Get diagnosis codes (ICD-10)
-- `POST /diagnoses/:id/resolve` - Resolve diagnosis
+### Diagnosis Management
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/patients/:id/diagnoses` | Get patient diagnoses | JWT Required |
+| `POST` | `/patients/:id/diagnoses` | Add new diagnosis | JWT Required |
+| `PUT` | `/diagnoses/:id` | Update diagnosis | JWT Required |
+| `GET` | `/diagnoses/codes` | Get diagnosis codes (ICD-10) | JWT Required |
+| `POST` | `/diagnoses/:id/resolve` | Resolve diagnosis | JWT Required |
 
-### Treatment Plans
-- `GET /patients/:id/treatment-plans` - Get patient treatment plans
-- `POST /patients/:id/treatment-plans` - Create treatment plan
-- `PUT /treatment-plans/:id` - Update treatment plan
-- `POST /treatment-plans/:id/complete` - Mark treatment as completed
-- `GET /treatment-plans/:id/progress` - Get treatment progress
+### Treatment Plan Management
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/patients/:id/treatment-plans` | Get patient treatment plans | JWT Required |
+| `POST` | `/patients/:id/treatment-plans` | Create treatment plan | JWT Required |
+| `PUT` | `/treatment-plans/:id` | Update treatment plan | JWT Required |
+| `POST` | `/treatment-plans/:id/complete` | Mark treatment as completed | JWT Required |
+| `GET` | `/treatment-plans/:id/progress` | Get treatment progress | JWT Required |
 
-### Clinical Reports
-- `GET /reports/clinical-summary` - Clinical summary reports
-- `GET /reports/patient-outcomes` - Patient outcome reports
-- `GET /reports/quality-measures` - Quality measure reports
-- `GET /reports/clinical-analytics` - Clinical analytics reports
-- `GET /reports/export` - Export clinical data
+### Clinical Reports & Analytics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/reports/clinical-summary` | Clinical summary reports | JWT Required |
+| `GET` | `/reports/patient-outcomes` | Patient outcome reports | JWT Required |
+| `GET` | `/reports/quality-measures` | Quality measure reports | JWT Required |
+| `GET` | `/reports/clinical-analytics` | Clinical analytics reports | JWT Required |
+| `GET` | `/reports/export` | Export clinical data | JWT Required |
 
 ### Health & Monitoring
-- `GET /clinical/health` - Service health check
-- `GET /clinical/metrics` - Clinical service metrics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/clinical/health` | Service health check | None |
+| `GET` | `/clinical/metrics` | Clinical service metrics | JWT Required |
 
 ## Installation & Setup Guide
 
