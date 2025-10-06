@@ -37,44 +37,56 @@ The Search Service is a comprehensive search and discovery microservice for the 
 ## API Endpoints
 
 ### General Search
-- `GET /search` - General search across all content
-- `GET /search/patients` - Search patients
-- `GET /search/providers` - Search healthcare providers
-- `GET /search/medical-records` - Search medical records
-- `GET /search/appointments` - Search appointments
-- `GET /search/medications` - Search medications
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/search` | General search across all content | JWT Required |
+| `GET` | `/search/patients` | Search patients | JWT Required |
+| `GET` | `/search/providers` | Search healthcare providers | JWT Required |
+| `GET` | `/search/medical-records` | Search medical records | JWT Required |
+| `GET` | `/search/appointments` | Search appointments | JWT Required |
+| `GET` | `/search/medications` | Search medications | JWT Required |
 
 ### Advanced Search
-- `POST /search/advanced` - Advanced search with complex queries
-- `GET /search/suggestions` - Get search suggestions
-- `GET /search/autocomplete` - Get autocomplete suggestions
-- `POST /search/filters` - Apply search filters
-- `GET /search/facets` - Get search facets and filters
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `POST` | `/search/advanced` | Advanced search with complex queries | JWT Required |
+| `GET` | `/search/suggestions` | Get search suggestions | JWT Required |
+| `GET` | `/search/autocomplete` | Get autocomplete suggestions | JWT Required |
+| `POST` | `/search/filters` | Apply search filters | JWT Required |
+| `GET` | `/search/facets` | Get search facets and filters | JWT Required |
 
 ### Search Analytics
-- `GET /search/analytics` - Get search analytics
-- `GET /search/trending` - Get trending search terms
-- `GET /search/popular` - Get popular search terms
-- `GET /search/history/:userId` - Get user search history
-- `DELETE /search/history/:userId` - Clear user search history
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/search/analytics` | Get search analytics | JWT Required |
+| `GET` | `/search/trending` | Get trending search terms | JWT Required |
+| `GET` | `/search/popular` | Get popular search terms | JWT Required |
+| `GET` | `/search/history/:userId` | Get user search history | JWT Required |
+| `DELETE` | `/search/history/:userId` | Clear user search history | JWT Required |
 
 ### Search Configuration
-- `GET /search/config` - Get search configuration
-- `PUT /search/config` - Update search configuration
-- `GET /search/indexes` - Get search indexes
-- `POST /search/indexes/rebuild` - Rebuild search indexes
-- `GET /search/indexes/status` - Get index status
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/search/config` | Get search configuration | JWT Required |
+| `PUT` | `/search/config` | Update search configuration | JWT Required |
+| `GET` | `/search/indexes` | Get search indexes | JWT Required |
+| `POST` | `/search/indexes/rebuild` | Rebuild search indexes | JWT Required |
+| `GET` | `/search/indexes/status` | Get index status | JWT Required |
 
 ### Search Performance
-- `GET /search/performance` - Get search performance metrics
-- `GET /search/optimization` - Get search optimization suggestions
-- `POST /search/optimize` - Optimize search performance
-- `GET /search/cache` - Get search cache statistics
-- `POST /search/cache/clear` - Clear search cache
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/search/performance` | Get search performance metrics | JWT Required |
+| `GET` | `/search/optimization` | Get search optimization suggestions | JWT Required |
+| `POST` | `/search/optimize` | Optimize search performance | JWT Required |
+| `GET` | `/search/cache` | Get search cache statistics | JWT Required |
+| `POST` | `/search/cache/clear` | Clear search cache | JWT Required |
 
 ### Health & Monitoring
-- `GET /search/health` - Service health check
-- `GET /search/metrics` - Search service metrics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/search/health` | Service health check | None |
+| `GET` | `/search/metrics` | Search service metrics | JWT Required |
 
 ## Installation & Setup Guide
 

@@ -37,53 +37,67 @@ The Payment Service is a comprehensive payment processing microservice for the K
 ## API Endpoints
 
 ### Payment Processing
-- `POST /payments` - Create new payment
-- `GET /payments` - Get all payments (with filtering and pagination)
-- `GET /payments/:id` - Get specific payment details
-- `POST /payments/:id/capture` - Capture authorized payment
-- `POST /payments/:id/refund` - Process refund
-- `POST /payments/:id/void` - Void payment
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `POST` | `/payments` | Create new payment | JWT Required |
+| `GET` | `/payments` | Get all payments (with filtering and pagination) | JWT Required |
+| `GET` | `/payments/:id` | Get specific payment details | JWT Required |
+| `POST` | `/payments/:id/capture` | Capture authorized payment | JWT Required |
+| `POST` | `/payments/:id/refund` | Process refund | JWT Required |
+| `POST` | `/payments/:id/void` | Void payment | JWT Required |
 
 ### Payment Methods
-- `GET /payment-methods` - Get user payment methods
-- `POST /payment-methods` - Add new payment method
-- `PUT /payment-methods/:id` - Update payment method
-- `DELETE /payment-methods/:id` - Remove payment method
-- `POST /payment-methods/:id/set-default` - Set default payment method
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/payment-methods` | Get user payment methods | JWT Required |
+| `POST` | `/payment-methods` | Add new payment method | JWT Required |
+| `PUT` | `/payment-methods/:id` | Update payment method | JWT Required |
+| `DELETE` | `/payment-methods/:id` | Remove payment method | JWT Required |
+| `POST` | `/payment-methods/:id/set-default` | Set default payment method | JWT Required |
 
 ### Invoices & Billing
-- `GET /invoices` - Get all invoices
-- `GET /invoices/:id` - Get specific invoice
-- `POST /invoices` - Create new invoice
-- `PUT /invoices/:id` - Update invoice
-- `POST /invoices/:id/send` - Send invoice to patient
-- `POST /invoices/:id/pay` - Process invoice payment
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/invoices` | Get all invoices | JWT Required |
+| `GET` | `/invoices/:id` | Get specific invoice | JWT Required |
+| `POST` | `/invoices` | Create new invoice | JWT Required |
+| `PUT` | `/invoices/:id` | Update invoice | JWT Required |
+| `POST` | `/invoices/:id/send` | Send invoice to patient | JWT Required |
+| `POST` | `/invoices/:id/pay` | Process invoice payment | JWT Required |
 
 ### Insurance Claims
-- `GET /claims` - Get all insurance claims
-- `POST /claims` - Submit new insurance claim
-- `GET /claims/:id` - Get specific claim details
-- `PUT /claims/:id` - Update claim information
-- `POST /claims/:id/submit` - Submit claim to insurance
-- `GET /claims/:id/status` - Check claim status
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/claims` | Get all insurance claims | JWT Required |
+| `POST` | `/claims` | Submit new insurance claim | JWT Required |
+| `GET` | `/claims/:id` | Get specific claim details | JWT Required |
+| `PUT` | `/claims/:id` | Update claim information | JWT Required |
+| `POST` | `/claims/:id/submit` | Submit claim to insurance | JWT Required |
+| `GET` | `/claims/:id/status` | Check claim status | JWT Required |
 
 ### Payment Plans
-- `GET /payment-plans` - Get all payment plans
-- `POST /payment-plans` - Create new payment plan
-- `GET /payment-plans/:id` - Get specific payment plan
-- `PUT /payment-plans/:id` - Update payment plan
-- `POST /payment-plans/:id/process` - Process payment plan payment
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/payment-plans` | Get all payment plans | JWT Required |
+| `POST` | `/payment-plans` | Create new payment plan | JWT Required |
+| `GET` | `/payment-plans/:id` | Get specific payment plan | JWT Required |
+| `PUT` | `/payment-plans/:id` | Update payment plan | JWT Required |
+| `POST` | `/payment-plans/:id/process` | Process payment plan payment | JWT Required |
 
 ### Financial Reporting
-- `GET /reports/revenue` - Revenue reports
-- `GET /reports/transactions` - Transaction reports
-- `GET /reports/refunds` - Refund reports
-- `GET /reports/insurance` - Insurance payment reports
-- `GET /reports/export` - Export financial data
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/reports/revenue` | Revenue reports | JWT Required |
+| `GET` | `/reports/transactions` | Transaction reports | JWT Required |
+| `GET` | `/reports/refunds` | Refund reports | JWT Required |
+| `GET` | `/reports/insurance` | Insurance payment reports | JWT Required |
+| `GET` | `/reports/export` | Export financial data | JWT Required |
 
 ### Health & Monitoring
-- `GET /payments/health` - Service health check
-- `GET /payments/metrics` - Payment service metrics
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| `GET` | `/payments/health` | Service health check | None |
+| `GET` | `/payments/metrics` | Payment service metrics | JWT Required |
 
 ## Installation & Setup Guide
 
