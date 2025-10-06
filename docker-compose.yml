@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
-      POSTGRES_MULTIPLE_DATABASES: auth_db,users_db,appointments_db,payments_db,clinical_db,notifications_db,search_db,video_db,analytics_db,lab_db,pharmacy_db,surgery_db,nurse_db,document_db,admin_db,consultations_db
+      POSTGRES_MULTIPLE_DATABASES: auth_db,users_db,appointments_db,payments_db,clinical_db,notifications_db,search_db,video_db,analytics_db,lab_db,pharmacy_db,surgery_db,nurse_db,document_db,admin_db,inventory_db,consultations_db
     ports:
       - "5432:5432"
     volumes:
@@ -580,6 +580,35 @@ services:
     networks:
       - healthcare-network
 
+  # Inventory Service
+  inventory-service:
+    build:
+      context: ./services/inventory-service
+      dockerfile: Dockerfile
+    container_name: healthcare-inventory-service
+    environment:
+      NODE_ENV: development
+      PORT: 3017
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_DATABASE: inventory_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis123
+      KAFKA_BROKERS: kafka:29092
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+    ports:
+      - "3017:3017"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    networks:
+      - healthcare-network
+
   # API Gateway
   api-gateway:
     build:
@@ -604,6 +633,7 @@ services:
       NURSE_SERVICE_URL: http://nurse-service:3014
       DOCUMENT_SERVICE_URL: http://document-service:3015
       ADMIN_SERVICE_URL: http://admin-service:3016
+      INVENTORY_SERVICE_URL: http://inventory-service:3017
       CONSULTATIONS_SERVICE_URL: http://consultations-service:3018
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -630,6 +660,7 @@ services:
       - nurse-service
       - document-service
       - admin-service
+      - inventory-service
       - consultations-service
     networks:
       - healthcare-network

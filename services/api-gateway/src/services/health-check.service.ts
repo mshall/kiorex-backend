@@ -16,6 +16,14 @@ export class HealthCheckService {
       'search-service',
       'video-service',
       'analytics-service',
+      'lab-service',
+      'pharmacy-service',
+      'surgery-service',
+      'nurse-service',
+      'document-service',
+      'admin-service',
+      'inventory-service',
+      'consultations-service',
     ];
 
     const serviceStatuses = await Promise.all(
@@ -46,6 +54,8 @@ export class HealthCheckService {
       'auth-service',
       'user-service',
       'appointment-service',
+      'clinical-service',
+      'payment-service',
     ];
 
     const criticalStatuses = await Promise.all(

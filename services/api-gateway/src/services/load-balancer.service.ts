@@ -21,13 +21,21 @@ export class LoadBalancerService {
     const services = [
       { name: 'auth-service', port: 3001 },
       { name: 'user-service', port: 3002 },
-      { name: 'appointment-service', port: 3003 },
+      { name: 'appointment-service', port: 3005 },
       { name: 'payment-service', port: 3004 },
-      { name: 'clinical-service', port: 3005 },
-      { name: 'notification-service', port: 3006 },
-      { name: 'search-service', port: 3007 },
-      { name: 'video-service', port: 3008 },
-      { name: 'analytics-service', port: 3009 },
+      { name: 'clinical-service', port: 3006 },
+      { name: 'notification-service', port: 3007 },
+      { name: 'search-service', port: 3008 },
+      { name: 'video-service', port: 3009 },
+      { name: 'analytics-service', port: 3010 },
+      { name: 'lab-service', port: 3011 },
+      { name: 'pharmacy-service', port: 3012 },
+      { name: 'surgery-service', port: 3013 },
+      { name: 'nurse-service', port: 3014 },
+      { name: 'document-service', port: 3015 },
+      { name: 'admin-service', port: 3016 },
+      { name: 'inventory-service', port: 3017 },
+      { name: 'consultations-service', port: 3018 },
     ];
 
     services.forEach(service => {
