@@ -4,6 +4,8 @@
 
 The Appointment Service is a comprehensive scheduling and appointment management microservice for the Kiorex Healthcare Platform. It handles appointment scheduling, calendar management, provider availability, patient booking, appointment reminders, and scheduling optimization for healthcare organizations.
 
+**Important Distinction**: This service manages the **scheduling** of appointments (when and where they occur), while the **Consultations Service** handles the actual **clinical consultations** that take place during those appointments (clinical notes, assessments, diagnoses, treatment plans).
+
 ## Use Cases & Features
 
 ### Appointment Scheduling
