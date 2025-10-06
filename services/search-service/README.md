@@ -170,45 +170,47 @@ The Search Service is a comprehensive search and discovery microservice for the 
    docker-compose up search-service
    ```
 
-### Database Schema
+## Database Schema
 
-#### Search Indexes Table
-```sql
-CREATE TABLE search_indexes (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  index_name VARCHAR(100) NOT NULL,
-  index_type VARCHAR(50) NOT NULL,
-  status VARCHAR(20) NOT NULL,
-  document_count INTEGER DEFAULT 0,
-  last_updated TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+### Core Tables
 
-#### Search Queries Table
-```sql
-CREATE TABLE search_queries (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID,
-  query_text TEXT NOT NULL,
-  filters JSONB,
-  results_count INTEGER,
-  response_time_ms INTEGER,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+#### `search_indexes`
+Search index management and status tracking.
 
-#### Search Analytics Table
-```sql
-CREATE TABLE search_analytics (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  query_text TEXT NOT NULL,
-  search_count INTEGER DEFAULT 1,
-  last_searched TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  success_rate DECIMAL(5,2),
-  average_response_time INTEGER
-);
-```
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| index_name | VARCHAR(100) | Search index name |
+| index_type | VARCHAR(50) | Type of search index |
+| status | VARCHAR(20) | Index status |
+| document_count | INTEGER | Number of indexed documents |
+| last_updated | TIMESTAMP | Last index update time |
+| created_at | TIMESTAMP | Creation timestamp |
+
+#### `search_queries`
+Search query logging and performance tracking.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| user_id | UUID | Reference to user |
+| query_text | TEXT | Search query text |
+| filters | JSONB | Applied search filters |
+| results_count | INTEGER | Number of results returned |
+| response_time_ms | INTEGER | Query response time in milliseconds |
+| created_at | TIMESTAMP | Creation timestamp |
+
+#### `search_analytics`
+Search analytics and trending data.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| query_text | TEXT | Search query text |
+| search_count | INTEGER | Number of times searched |
+| last_searched | TIMESTAMP | Last search timestamp |
+| success_rate | DECIMAL(5,2) | Query success rate percentage |
+| average_response_time | INTEGER | Average response time in milliseconds |
 
 ## Monitoring & Health Checks
 
@@ -297,6 +299,45 @@ CREATE TABLE search_analytics (
 - **Performance Metrics**: Advanced search performance metrics
 - **Optimization Insights**: Search optimization insights and recommendations
 - **Business Intelligence**: Search-based business intelligence
+
+## Sample Data
+
+### Sample Search Index
+```json
+{
+  "index_name": "patients_index",
+  "index_type": "elasticsearch",
+  "status": "active",
+  "document_count": 15420,
+  "last_updated": "2024-01-15T10:30:00Z"
+}
+```
+
+### Sample Search Query
+```json
+{
+  "user_id": "123e4567-e89b-12d3-a456-426614174001",
+  "query_text": "diabetes management",
+  "filters": {
+    "patient_type": "active",
+    "date_range": "2024-01-01 to 2024-01-31",
+    "department": "endocrinology"
+  },
+  "results_count": 25,
+  "response_time_ms": 45
+}
+```
+
+### Sample Search Analytics
+```json
+{
+  "query_text": "blood pressure medication",
+  "search_count": 156,
+  "last_searched": "2024-01-15T14:22:00Z",
+  "success_rate": 92.5,
+  "average_response_time": 38
+}
+```
 
 ## Dependencies
 
