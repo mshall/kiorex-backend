@@ -169,51 +169,53 @@ The Appointment Service is a comprehensive scheduling and appointment management
    docker-compose up appointment-service
    ```
 
-### Database Schema
+## Database Schema
 
-#### Appointments Table
-```sql
-CREATE TABLE appointments (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patient_id UUID NOT NULL,
-  provider_id UUID NOT NULL,
-  appointment_type VARCHAR(50) NOT NULL,
-  status VARCHAR(20) NOT NULL,
-  scheduled_date TIMESTAMP NOT NULL,
-  duration_minutes INTEGER NOT NULL,
-  notes TEXT,
-  location VARCHAR(100),
-  room_id UUID,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+### Core Tables
 
-#### Provider Schedules Table
-```sql
-CREATE TABLE provider_schedules (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  provider_id UUID NOT NULL,
-  day_of_week INTEGER NOT NULL,
-  start_time TIME NOT NULL,
-  end_time TIME NOT NULL,
-  is_available BOOLEAN DEFAULT true,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+#### `appointments`
+Patient appointment scheduling and management.
 
-#### Appointment Reminders Table
-```sql
-CREATE TABLE appointment_reminders (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  appointment_id UUID REFERENCES appointments(id),
-  reminder_type VARCHAR(20) NOT NULL,
-  scheduled_time TIMESTAMP NOT NULL,
-  status VARCHAR(20) NOT NULL,
-  sent_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| patient_id | UUID | Reference to patient |
+| provider_id | UUID | Reference to healthcare provider |
+| appointment_type | VARCHAR(50) | Type of appointment |
+| status | VARCHAR(20) | Appointment status |
+| scheduled_date | TIMESTAMP | Scheduled appointment time |
+| duration_minutes | INTEGER | Appointment duration |
+| notes | TEXT | Additional notes |
+| location | VARCHAR(100) | Appointment location |
+| room_id | UUID | Reference to room |
+| created_at | TIMESTAMP | Creation timestamp |
+| updated_at | TIMESTAMP | Last update timestamp |
+
+#### `provider_schedules`
+Healthcare provider availability and scheduling.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| provider_id | UUID | Reference to healthcare provider |
+| day_of_week | INTEGER | Day of week (0-6) |
+| start_time | TIME | Available start time |
+| end_time | TIME | Available end time |
+| is_available | BOOLEAN | Availability status |
+| created_at | TIMESTAMP | Creation timestamp |
+
+#### `appointment_reminders`
+Appointment reminder notifications and tracking.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| appointment_id | UUID | Reference to appointment |
+| reminder_type | VARCHAR(20) | Type of reminder |
+| scheduled_time | TIMESTAMP | Reminder scheduled time |
+| status | VARCHAR(20) | Reminder status |
+| sent_at | TIMESTAMP | Reminder sent timestamp |
+| created_at | TIMESTAMP | Creation timestamp |
 
 ## Monitoring & Health Checks
 
@@ -302,6 +304,44 @@ CREATE TABLE appointment_reminders (
 - **Reporting**: Advanced reporting and analytics capabilities
 - **Compliance Monitoring**: Real-time compliance monitoring and alerting
 - **Data Governance**: Comprehensive data governance and stewardship
+
+## Sample Data
+
+### Sample Appointment
+```json
+{
+  "patient_id": "123e4567-e89b-12d3-a456-426614174001",
+  "provider_id": "123e4567-e89b-12d3-a456-426614174002",
+  "appointment_type": "consultation",
+  "status": "scheduled",
+  "scheduled_date": "2024-01-20T10:00:00Z",
+  "duration_minutes": 30,
+  "notes": "Follow-up visit for diabetes management",
+  "location": "Main Clinic - Room 101",
+  "room_id": "123e4567-e89b-12d3-a456-426614174003"
+}
+```
+
+### Sample Provider Schedule
+```json
+{
+  "provider_id": "123e4567-e89b-12d3-a456-426614174002",
+  "day_of_week": 1,
+  "start_time": "09:00:00",
+  "end_time": "17:00:00",
+  "is_available": true
+}
+```
+
+### Sample Appointment Reminder
+```json
+{
+  "appointment_id": "123e4567-e89b-12d3-a456-426614174004",
+  "reminder_type": "email",
+  "scheduled_time": "2024-01-19T18:00:00Z",
+  "status": "pending"
+}
+```
 
 ## Dependencies
 

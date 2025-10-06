@@ -189,78 +189,80 @@ The Clinical Service is a comprehensive medical records and clinical data manage
    docker-compose up clinical-service
    ```
 
-### Database Schema
+## Database Schema
 
-#### Medical Records Table
-```sql
-CREATE TABLE medical_records (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patient_id UUID NOT NULL,
-  provider_id UUID NOT NULL,
-  record_type VARCHAR(50) NOT NULL,
-  title VARCHAR(200) NOT NULL,
-  content TEXT NOT NULL,
-  status VARCHAR(20) NOT NULL,
-  is_signed BOOLEAN DEFAULT false,
-  signed_by UUID,
-  signed_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+### Core Tables
 
-#### Vital Signs Table
-```sql
-CREATE TABLE vital_signs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patient_id UUID NOT NULL,
-  provider_id UUID NOT NULL,
-  temperature DECIMAL(4,1),
-  blood_pressure_systolic INTEGER,
-  blood_pressure_diastolic INTEGER,
-  heart_rate INTEGER,
-  respiratory_rate INTEGER,
-  oxygen_saturation DECIMAL(4,1),
-  weight DECIMAL(5,2),
-  height DECIMAL(5,2),
-  bmi DECIMAL(4,1),
-  recorded_at TIMESTAMP NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+#### `medical_records`
+Patient medical records and clinical documentation.
 
-#### Prescriptions Table
-```sql
-CREATE TABLE prescriptions (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patient_id UUID NOT NULL,
-  provider_id UUID NOT NULL,
-  medication_name VARCHAR(200) NOT NULL,
-  dosage VARCHAR(100) NOT NULL,
-  frequency VARCHAR(100) NOT NULL,
-  duration VARCHAR(100),
-  instructions TEXT,
-  status VARCHAR(20) NOT NULL,
-  prescribed_at TIMESTAMP NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| patient_id | UUID | Reference to patient |
+| provider_id | UUID | Reference to healthcare provider |
+| record_type | VARCHAR(50) | Type of medical record |
+| title | VARCHAR(200) | Record title |
+| content | TEXT | Record content |
+| status | VARCHAR(20) | Record status |
+| is_signed | BOOLEAN | Digital signature status |
+| signed_by | UUID | Provider who signed the record |
+| signed_at | TIMESTAMP | Signature timestamp |
+| created_at | TIMESTAMP | Creation timestamp |
+| updated_at | TIMESTAMP | Last update timestamp |
 
-#### Diagnoses Table
-```sql
-CREATE TABLE diagnoses (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patient_id UUID NOT NULL,
-  provider_id UUID NOT NULL,
-  diagnosis_code VARCHAR(20) NOT NULL,
-  diagnosis_name VARCHAR(200) NOT NULL,
-  description TEXT,
-  status VARCHAR(20) NOT NULL,
-  diagnosed_at TIMESTAMP NOT NULL,
-  resolved_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+#### `vital_signs`
+Patient vital signs measurements and tracking.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| patient_id | UUID | Reference to patient |
+| provider_id | UUID | Reference to healthcare provider |
+| temperature | DECIMAL(4,1) | Body temperature |
+| blood_pressure_systolic | INTEGER | Systolic blood pressure |
+| blood_pressure_diastolic | INTEGER | Diastolic blood pressure |
+| heart_rate | INTEGER | Heart rate (BPM) |
+| respiratory_rate | INTEGER | Respiratory rate |
+| oxygen_saturation | DECIMAL(4,1) | Oxygen saturation percentage |
+| weight | DECIMAL(5,2) | Patient weight |
+| height | DECIMAL(5,2) | Patient height |
+| bmi | DECIMAL(4,1) | Body Mass Index |
+| recorded_at | TIMESTAMP | Recording timestamp |
+| created_at | TIMESTAMP | Creation timestamp |
+
+#### `prescriptions`
+Patient medication prescriptions and management.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| patient_id | UUID | Reference to patient |
+| provider_id | UUID | Reference to prescribing provider |
+| medication_name | VARCHAR(200) | Medication name |
+| dosage | VARCHAR(100) | Medication dosage |
+| frequency | VARCHAR(100) | Administration frequency |
+| duration | VARCHAR(100) | Prescription duration |
+| instructions | TEXT | Administration instructions |
+| status | VARCHAR(20) | Prescription status |
+| prescribed_at | TIMESTAMP | Prescription timestamp |
+| created_at | TIMESTAMP | Creation timestamp |
+
+#### `diagnoses`
+Patient diagnoses and medical conditions.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| patient_id | UUID | Reference to patient |
+| provider_id | UUID | Reference to diagnosing provider |
+| diagnosis_code | VARCHAR(20) | ICD-10 diagnosis code |
+| diagnosis_name | VARCHAR(200) | Diagnosis name |
+| description | TEXT | Diagnosis description |
+| status | VARCHAR(20) | Diagnosis status |
+| diagnosed_at | TIMESTAMP | Diagnosis timestamp |
+| resolved_at | TIMESTAMP | Resolution timestamp |
+| created_at | TIMESTAMP | Creation timestamp |
 
 ## Monitoring & Health Checks
 
@@ -349,6 +351,69 @@ CREATE TABLE diagnoses (
 - **Pharmacy Integration**: Pharmacy system integration
 - **Billing Integration**: Billing and coding integration
 - **External Systems**: Integration with external healthcare systems
+
+## Sample Data
+
+### Sample Medical Record
+```json
+{
+  "patient_id": "123e4567-e89b-12d3-a456-426614174001",
+  "provider_id": "123e4567-e89b-12d3-a456-426614174002",
+  "record_type": "progress_note",
+  "title": "Follow-up Visit - Diabetes Management",
+  "content": "Patient reports good blood sugar control. HbA1c improved from 8.2% to 7.1%. Continue current medication regimen.",
+  "status": "signed",
+  "is_signed": true,
+  "signed_by": "123e4567-e89b-12d3-a456-426614174002",
+  "signed_at": "2024-01-15T10:30:00Z"
+}
+```
+
+### Sample Vital Signs
+```json
+{
+  "patient_id": "123e4567-e89b-12d3-a456-426614174001",
+  "provider_id": "123e4567-e89b-12d3-a456-426614174002",
+  "temperature": 98.6,
+  "blood_pressure_systolic": 120,
+  "blood_pressure_diastolic": 80,
+  "heart_rate": 72,
+  "respiratory_rate": 16,
+  "oxygen_saturation": 98.5,
+  "weight": 70.5,
+  "height": 175.0,
+  "bmi": 23.0,
+  "recorded_at": "2024-01-15T10:00:00Z"
+}
+```
+
+### Sample Prescription
+```json
+{
+  "patient_id": "123e4567-e89b-12d3-a456-426614174001",
+  "provider_id": "123e4567-e89b-12d3-a456-426614174002",
+  "medication_name": "Metformin",
+  "dosage": "500mg",
+  "frequency": "Twice daily",
+  "duration": "Ongoing",
+  "instructions": "Take with meals to reduce gastrointestinal side effects",
+  "status": "active",
+  "prescribed_at": "2024-01-15T10:15:00Z"
+}
+```
+
+### Sample Diagnosis
+```json
+{
+  "patient_id": "123e4567-e89b-12d3-a456-426614174001",
+  "provider_id": "123e4567-e89b-12d3-a456-426614174002",
+  "diagnosis_code": "E11.9",
+  "diagnosis_name": "Type 2 diabetes mellitus without complications",
+  "description": "Well controlled diabetes on metformin therapy",
+  "status": "active",
+  "diagnosed_at": "2024-01-15T10:20:00Z"
+}
+```
 
 ## Dependencies
 

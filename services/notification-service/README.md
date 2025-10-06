@@ -194,55 +194,57 @@ The Notification Service is a comprehensive multi-channel communication microser
    docker-compose up notification-service
    ```
 
-### Database Schema
+## Database Schema
 
-#### Notifications Table
-```sql
-CREATE TABLE notifications (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
-  type VARCHAR(50) NOT NULL,
-  channel VARCHAR(20) NOT NULL,
-  subject VARCHAR(200),
-  content TEXT NOT NULL,
-  status VARCHAR(20) NOT NULL,
-  scheduled_at TIMESTAMP,
-  sent_at TIMESTAMP,
-  delivered_at TIMESTAMP,
-  read_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+### Core Tables
 
-#### Notification Templates Table
-```sql
-CREATE TABLE notification_templates (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(100) NOT NULL,
-  type VARCHAR(50) NOT NULL,
-  channel VARCHAR(20) NOT NULL,
-  subject VARCHAR(200),
-  content TEXT NOT NULL,
-  variables JSONB,
-  is_active BOOLEAN DEFAULT true,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+#### `notifications`
+Notification messages and delivery tracking.
 
-#### User Preferences Table
-```sql
-CREATE TABLE user_notification_preferences (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
-  channel VARCHAR(20) NOT NULL,
-  type VARCHAR(50) NOT NULL,
-  is_enabled BOOLEAN DEFAULT true,
-  frequency VARCHAR(20),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| user_id | UUID | Reference to user |
+| type | VARCHAR(50) | Notification type |
+| channel | VARCHAR(20) | Delivery channel |
+| subject | VARCHAR(200) | Notification subject |
+| content | TEXT | Notification content |
+| status | VARCHAR(20) | Delivery status |
+| scheduled_at | TIMESTAMP | Scheduled delivery time |
+| sent_at | TIMESTAMP | Sent timestamp |
+| delivered_at | TIMESTAMP | Delivered timestamp |
+| read_at | TIMESTAMP | Read timestamp |
+| created_at | TIMESTAMP | Creation timestamp |
+
+#### `notification_templates`
+Reusable notification templates and formatting.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| name | VARCHAR(100) | Template name |
+| type | VARCHAR(50) | Template type |
+| channel | VARCHAR(20) | Delivery channel |
+| subject | VARCHAR(200) | Template subject |
+| content | TEXT | Template content |
+| variables | JSONB | Template variables |
+| is_active | BOOLEAN | Active status |
+| created_at | TIMESTAMP | Creation timestamp |
+| updated_at | TIMESTAMP | Last update timestamp |
+
+#### `user_notification_preferences`
+User notification preferences and settings.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| user_id | UUID | Reference to user |
+| channel | VARCHAR(20) | Notification channel |
+| type | VARCHAR(50) | Notification type |
+| is_enabled | BOOLEAN | Preference enabled status |
+| frequency | VARCHAR(20) | Notification frequency |
+| created_at | TIMESTAMP | Creation timestamp |
+| updated_at | TIMESTAMP | Last update timestamp |
 
 #### Notification Logs Table
 ```sql
@@ -344,6 +346,52 @@ CREATE TABLE notification_logs (
 - **Interactive Notifications**: Interactive notification capabilities
 - **Notification History**: Comprehensive notification history
 - **User Feedback**: User feedback and rating system
+
+## Sample Data
+
+### Sample Notification
+```json
+{
+  "user_id": "123e4567-e89b-12d3-a456-426614174001",
+  "type": "appointment_reminder",
+  "channel": "email",
+  "subject": "Appointment Reminder - Tomorrow at 10:00 AM",
+  "content": "Dear John, this is a reminder that you have an appointment with Dr. Smith tomorrow at 10:00 AM. Please arrive 15 minutes early.",
+  "status": "sent",
+  "scheduled_at": "2024-01-19T18:00:00Z",
+  "sent_at": "2024-01-19T18:00:05Z",
+  "delivered_at": "2024-01-19T18:00:10Z"
+}
+```
+
+### Sample Notification Template
+```json
+{
+  "name": "Appointment Reminder Template",
+  "type": "appointment_reminder",
+  "channel": "email",
+  "subject": "Appointment Reminder - {{appointmentDate}} at {{appointmentTime}}",
+  "content": "Dear {{patientName}}, this is a reminder that you have an appointment with {{providerName}} on {{appointmentDate}} at {{appointmentTime}}. Please arrive 15 minutes early.",
+  "variables": {
+    "patientName": "string",
+    "providerName": "string",
+    "appointmentDate": "date",
+    "appointmentTime": "time"
+  },
+  "is_active": true
+}
+```
+
+### Sample User Notification Preference
+```json
+{
+  "user_id": "123e4567-e89b-12d3-a456-426614174001",
+  "channel": "email",
+  "type": "appointment_reminder",
+  "is_enabled": true,
+  "frequency": "immediate"
+}
+```
 
 ## Dependencies
 

@@ -171,54 +171,56 @@ The Payment Service is a comprehensive payment processing microservice for the K
    docker-compose up payment-service
    ```
 
-### Database Schema
+## Database Schema
 
-#### Payments Table
-```sql
-CREATE TABLE payments (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patient_id UUID NOT NULL,
-  amount DECIMAL(10,2) NOT NULL,
-  currency VARCHAR(3) DEFAULT 'USD',
-  status VARCHAR(20) NOT NULL,
-  payment_method_id VARCHAR(100),
-  stripe_payment_intent_id VARCHAR(100),
-  description TEXT,
-  metadata JSONB,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+### Core Tables
 
-#### Payment Methods Table
-```sql
-CREATE TABLE payment_methods (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
-  stripe_payment_method_id VARCHAR(100) NOT NULL,
-  type VARCHAR(20) NOT NULL,
-  card_last_four VARCHAR(4),
-  card_brand VARCHAR(20),
-  is_default BOOLEAN DEFAULT false,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+#### `payments`
+Payment transactions and processing records.
 
-#### Invoices Table
-```sql
-CREATE TABLE invoices (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patient_id UUID NOT NULL,
-  amount DECIMAL(10,2) NOT NULL,
-  currency VARCHAR(3) DEFAULT 'USD',
-  status VARCHAR(20) NOT NULL,
-  due_date DATE,
-  description TEXT,
-  line_items JSONB,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| patient_id | UUID | Reference to patient |
+| amount | DECIMAL(10,2) | Payment amount |
+| currency | VARCHAR(3) | Currency code |
+| status | VARCHAR(20) | Payment status |
+| payment_method_id | VARCHAR(100) | Payment method reference |
+| stripe_payment_intent_id | VARCHAR(100) | Stripe payment intent ID |
+| description | TEXT | Payment description |
+| metadata | JSONB | Additional payment metadata |
+| created_at | TIMESTAMP | Creation timestamp |
+| updated_at | TIMESTAMP | Last update timestamp |
+
+#### `payment_methods`
+User payment methods and card information.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| user_id | UUID | Reference to user |
+| stripe_payment_method_id | VARCHAR(100) | Stripe payment method ID |
+| type | VARCHAR(20) | Payment method type |
+| card_last_four | VARCHAR(4) | Last four digits of card |
+| card_brand | VARCHAR(20) | Card brand (Visa, MasterCard, etc.) |
+| is_default | BOOLEAN | Default payment method flag |
+| created_at | TIMESTAMP | Creation timestamp |
+
+#### `invoices`
+Patient invoices and billing records.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| patient_id | UUID | Reference to patient |
+| amount | DECIMAL(10,2) | Invoice amount |
+| currency | VARCHAR(3) | Currency code |
+| status | VARCHAR(20) | Invoice status |
+| due_date | DATE | Payment due date |
+| description | TEXT | Invoice description |
+| line_items | JSONB | Invoice line items |
+| created_at | TIMESTAMP | Creation timestamp |
+| updated_at | TIMESTAMP | Last update timestamp |
 
 #### Insurance Claims Table
 ```sql
@@ -333,6 +335,61 @@ CREATE TABLE insurance_claims (
 - **Load Balancing**: Horizontal scaling and load balancing
 - **CDN Integration**: Content delivery network for payment pages
 - **Microservice Architecture**: Enhanced microservice communication
+
+## Sample Data
+
+### Sample Payment
+```json
+{
+  "patient_id": "123e4567-e89b-12d3-a456-426614174001",
+  "amount": 150.00,
+  "currency": "USD",
+  "status": "completed",
+  "payment_method_id": "pm_1234567890",
+  "stripe_payment_intent_id": "pi_1234567890",
+  "description": "Consultation fee - Dr. Smith",
+  "metadata": {
+    "appointment_id": "123e4567-e89b-12d3-a456-426614174002",
+    "service_type": "consultation"
+  }
+}
+```
+
+### Sample Payment Method
+```json
+{
+  "user_id": "123e4567-e89b-12d3-a456-426614174001",
+  "stripe_payment_method_id": "pm_1234567890",
+  "type": "card",
+  "card_last_four": "4242",
+  "card_brand": "visa",
+  "is_default": true
+}
+```
+
+### Sample Invoice
+```json
+{
+  "patient_id": "123e4567-e89b-12d3-a456-426614174001",
+  "amount": 250.00,
+  "currency": "USD",
+  "status": "paid",
+  "due_date": "2024-02-15",
+  "description": "Medical services - January 2024",
+  "line_items": [
+    {
+      "description": "Consultation fee",
+      "amount": 150.00,
+      "quantity": 1
+    },
+    {
+      "description": "Lab tests",
+      "amount": 100.00,
+      "quantity": 1
+    }
+  ]
+}
+```
 
 ## Dependencies
 
